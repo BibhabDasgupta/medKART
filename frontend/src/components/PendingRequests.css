@@ -1,0 +1,54 @@
+.pending-requests-container {
+    padding: 20px;
+  }
+  
+  .requests-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .requests-table th, .requests-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .requests-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .requests-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .requests-table input {
+    padding: 5px;
+    margin-right: 5px;
+    width: 150px;
+    box-sizing: border-box;
+  }
+  
+  .requests-table .actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .requests-table .actions input {
+    margin-right: 5px;
+    flex: 1;
+  }
+  
+  .requests-table button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .requests-table button:hover {
+    background-color: #0056b3;
+  }
+  
+  .actions button{
+    width: 300px;
+  }
