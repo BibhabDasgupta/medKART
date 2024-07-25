@@ -35,7 +35,27 @@ exports.getPendingStakeholderByUsername = async (req, res) => {
   };
 
   // Route to accept the pending stakeholder
-  exports.acceptPendingStakeholder= async (req, res) => {
+  // exports.acceptPendingStakeholder= async (req, res) => {
+  //   const { username } = req.body;
+  
+  //   try {
+  //     const stakeholder = await PendingStakeholder.findOne({ username });
+  
+  //     if (!stakeholder) {
+  //       return res.status(404).json({ message: 'Stakeholder not found' });
+  //     }
+  
+  //     stakeholder.status = true;
+  //     await stakeholder.save();
+  
+  //     res.status(200).json({ message: 'Stakeholder accepted successfully' });
+  //   } catch (error) {
+  //     console.error('Error accepting stakeholder:', error);
+  //     res.status(500).json({ message: 'Internal server error' });
+  //   }
+  // };
+
+  exports.acceptPendingStakeholder = async (req, res) => {
     const { username } = req.body;
   
     try {
@@ -45,7 +65,9 @@ exports.getPendingStakeholderByUsername = async (req, res) => {
         return res.status(404).json({ message: 'Stakeholder not found' });
       }
   
+      // Update the status and convert the account number to lowercase
       stakeholder.status = true;
+      stakeholder.accountNumber = stakeholder.accountNumber.toLowerCase();
       await stakeholder.save();
   
       res.status(200).json({ message: 'Stakeholder accepted successfully' });
@@ -54,6 +76,7 @@ exports.getPendingStakeholderByUsername = async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+  
   
   exports.getPendingStakeholderByAddress = async (req, res) => {
     const { accountNumber } = req.body;
