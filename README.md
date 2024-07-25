@@ -2,7 +2,7 @@
 medKART is a decentralized pharmaceutical supply chain management system, leveraging blockchain technology to enhance transparency, security, and efficiency in drug distribution.
 
 ## ⭐ Features
-- **QR Code & Cryptographic Key Tracking**: Ensure drug authenticity and traceability throughout the supply chain.
+- **QR Code & Cryptographic Key Tracking**: Ensure drug authenticity and traceability throughout the supply chain using unique QR code verification.
 - **IoT Data Integration**: Monitor temperature and humidity conditions of drugs in transit and receive alert messages if conditions deviate from recommended levels.
 - **Decentralized Platform**: Built with Solidity, enhancing security and transparency.
 - **User-Friendly Interface**: Developed using React for seamless user experience.
