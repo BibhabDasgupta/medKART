@@ -25,6 +25,7 @@ const Home2 = () => {
   const [hospitalRequests, setHospitalRequests] = useState([]);
   const [sendBatchId, setSendBatchId] = useState("");
   const [sendDistributorAddress, setSendDistributorAddress] = useState("");
+  const [isWholesaler, setIsWholesaler] = useState(null);
 
 
   useEffect(() => {
@@ -37,6 +38,7 @@ const Home2 = () => {
         console.log("Accounts from MetaMask:", accounts[0]);
         setCurrentAccount(accounts[0]);
         fetchAccountDetails(accounts[0]);
+        await checkWholesalerStatus(web3, accounts[0]);
         await loadContractData(web3);
       } else if (window.web3) {
         const web3 = new Web3(window.web3.currentProvider);
@@ -44,6 +46,7 @@ const Home2 = () => {
         console.log("Accounts from MetaMask (legacy):", accounts);
         setCurrentAccount(accounts[0]);
         fetchAccountDetails(accounts[0]);
+        await checkWholesalerStatus(web3, accounts[0]);
         await loadContractData(web3);
       } else {
         console.error(
@@ -74,6 +77,31 @@ const Home2 = () => {
       }
     };
 
+    const checkWholesalerStatus = async (web3, account) => {
+      try {
+        const networkId = await web3.eth.net.getId();
+        const networkData = PharmaChain.networks[networkId];
+        if (networkData) {
+          const contract = new web3.eth.Contract(PharmaChain.abi, networkData.address);
+          const wholesaler = await contract.methods.getWholesaler(account).call();
+          if (wholesaler.account.toLowerCase() === account.toLowerCase()) {
+            setIsWholesaler(true);
+          } else {
+            setIsWholesaler(false);
+          }
+        } else {
+          setIsWholesaler(false);
+        }
+      } catch (error) {
+        if (error.message.includes("Wholesaler does not exist")) {
+          setIsWholesaler(false);
+        } else {
+          console.error('Error checking Wholesaler status:', error);
+          setIsWholesaler(false);
+        }
+      }
+    };
+
     const loadContractData = async (web3) => {
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = PharmaChain.networks[networkId];
@@ -81,7 +109,6 @@ const Home2 = () => {
         PharmaChain.abi,
         deployedNetwork && deployedNetwork.address
       );
-
       const pharmaDistributionNetwork = PharmaDistribution.networks[networkId];
       const pharmaDistributionContract = new web3.eth.Contract(
         PharmaDistribution.abi,
@@ -593,6 +620,12 @@ const Home2 = () => {
   };
 
   return (
+    <div>
+    {isWholesaler === null ? (
+      <div>Loading...</div>
+    ) : isWholesaler === false ? (
+      <div className="not-wholesaler-container">You are not a wholesaler</div>
+    ) : (
     <div className="home2-container">
       <div className="sidebar">
         <ul>
@@ -623,6 +656,8 @@ const Home2 = () => {
       </div>
       <div className="content">{renderContent()}</div>
     </div>
+        )}
+     </div>
   );
 };
 

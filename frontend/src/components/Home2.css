@@ -19,6 +19,14 @@
     cursor: pointer;
   }
   
+  .not-wholesaler-container {
+    background: #fff5f5;
+    color: #ff4d4d;
+    border: 1px solid #ff4d4d;
+    border-radius: 5px;
+    padding: 20px;
+  }
+
   .sidebar ul li:hover {
     background-color: #ddd;
   }

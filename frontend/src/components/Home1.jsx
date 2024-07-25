@@ -20,6 +20,7 @@ const Home1 = () => {
   const [batches, setBatches] = useState([]);
   const [sendDrugsBatchId, setSendDrugsBatchId] = useState("");
  const [sendDrugsDistributor, setSendDrugsDistributor] = useState("");
+ const [isManufacturer, setIsManufacturer] = useState(null);
 
 
   const loadWeb3 = async () => {
@@ -33,6 +34,7 @@ const Home1 = () => {
       fetchAccountDetails(accounts[0]);
       await loadContractData(web3, accounts[0]);
       await fetchBatches(web3, accounts[0]); 
+      await checkManufacturerStatus(web3, accounts[0]);
     } else if (window.web3) {
       const web3 = new Web3(window.web3.currentProvider);
       const accounts = await web3.eth.getAccounts();
@@ -41,10 +43,36 @@ const Home1 = () => {
       fetchAccountDetails(accounts[0]);
       await loadContractData(web3, accounts[0]);
       await fetchBatches(web3, accounts[0]); 
+      await checkManufacturerStatus(web3, accounts[0]);
     } else {
       console.error(
         "Non-Ethereum browser detected. You should consider trying MetaMask!"
       );
+    }
+  };
+
+  const checkManufacturerStatus = async (web3, account) => {
+    try {
+      const networkId = await web3.eth.net.getId();
+      const networkData = PharmaChain.networks[networkId];
+      if (networkData) {
+        const contract = new web3.eth.Contract(PharmaChain.abi, networkData.address);
+        const manufacturer = await contract.methods.getManufacturer(account).call();
+        if (manufacturer.account.toLowerCase() === account.toLowerCase()) {
+          setIsManufacturer(true);
+        } else {
+          setIsManufacturer(false);
+        }
+      } else {
+        setIsManufacturer(false);
+      }
+    } catch (error) {
+      if (error.message.includes("Manufacturer does not exist")) {
+        setIsManufacturer(false);
+      } else {
+        console.error('Error checking manufacturer status:', error);
+        setIsManufacturer(false);
+      }
     }
   };
 
@@ -411,6 +439,12 @@ const handleSendDrugsSubmit = async (e) => {
   };
 
   return (
+    <div>
+    {isManufacturer === null ? (
+      <div>Loading...</div>
+    ) : isManufacturer === false ? (
+      <div className="not-manufacturer-container">You are not a manufacturer</div>
+    ) : (
     <div className="home1-container">
        <div className="sidebar">
         <ul>
@@ -424,6 +458,8 @@ const handleSendDrugsSubmit = async (e) => {
       </div>
       <div className="content">{renderContent()}</div>
     </div>
+     )}
+     </div>
   );
 };
 

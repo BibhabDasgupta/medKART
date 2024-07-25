@@ -19,6 +19,7 @@ const Home3 = () => {
   const [myBatches, setMyBatches] = useState([]);
   const [batchIdToSend, setBatchIdToSend] = useState('');
   const [hospitalAddressToSend, setHospitalAddressToSend] = useState('');
+  const [isDistributor, setIsDistributor] = useState(null);
 
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const Home3 = () => {
         console.log('Accounts from MetaMask:', accounts[0]);
         setCurrentAccount(accounts[0]);
         fetchAccountDetails(accounts[0]);
+        await checkDistributorStatus(web3, accounts[0]);
         await loadContractData(web3);
       } else if (window.web3) {
         const web3 = new Web3(window.web3.currentProvider);
@@ -36,6 +38,7 @@ const Home3 = () => {
         console.log('Accounts from MetaMask (legacy):', accounts);
         setCurrentAccount(accounts[0]);
         fetchAccountDetails(accounts[0]);
+        await checkDistributorStatus(web3, accounts[0]);
         await loadContractData(web3);
       } else {
         console.error('Non-Ethereum browser detected. You should consider trying MetaMask!');
@@ -60,6 +63,32 @@ const Home3 = () => {
         return null;
       }
     };
+
+    const checkDistributorStatus = async (web3, account) => {
+      try {
+        const networkId = await web3.eth.net.getId();
+        const networkData = PharmaChain.networks[networkId];
+        if (networkData) {
+          const contract = new web3.eth.Contract(PharmaChain.abi, networkData.address);
+          const distributor = await contract.methods.getDistributor(account).call();
+          if (distributor.account.toLowerCase() === account.toLowerCase()) {
+            setIsDistributor(true);
+          } else {
+            setIsDistributor(false);
+          }
+        } else {
+          setIsDistributor(false);
+        }
+      } catch (error) {
+        if (error.message.includes("Distributor does not exist")) {
+          setIsDistributor(false);
+        } else {
+          console.error('Error checking distributor status:', error);
+          setIsDistributor(false);
+        }
+      }
+    };
+
 
     const loadContractData = async (web3) => {
       const networkId = await web3.eth.net.getId();
@@ -532,6 +561,12 @@ const Home3 = () => {
   };
 
   return (
+    <div>
+    {isDistributor === null ? (
+      <div>Loading...</div>
+    ) : isDistributor === false ? (
+      <div className="not-distributor-container">You are not a distributor</div>
+    ) : (
     <div className="home3-container">
       <div className="sidebar">
         <ul>
@@ -551,6 +586,8 @@ const Home3 = () => {
         {renderContent()}
       </div>
     </div>
+      )}
+     </div>
   );
 };
 

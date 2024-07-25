@@ -19,6 +19,7 @@ const Home4 = () => {
   const [pharmaDistribution, setPharmaDistribution] = useState(null);
   const [myBatches, setMyBatches] = useState([]);
   const [hospitalRequests, setHospitalRequests] = useState([]);
+  const [isHospitalPharmacy, setIsHospitalPharmacy] = useState(null);
 
   useEffect(() => {
     const loadWeb3 = async () => {
@@ -27,12 +28,14 @@ const Home4 = () => {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         setCurrentAccount(accounts[0]);
         fetchAccountDetails(accounts[0]);
+        await checkHospitalPharmacyStatus(web3, accounts[0]);
         await loadContractData(web3);
       } else if (window.web3) {
         const web3 = new Web3(window.web3.currentProvider);
         const accounts = await web3.eth.getAccounts();
         setCurrentAccount(accounts[0]);
         fetchAccountDetails(accounts[0]);
+        await checkHospitalPharmacyStatus(web3, accounts[0]);
         await loadContractData(web3);
       } else {
         console.error('Non-Ethereum browser detected. You should consider trying MetaMask!');
@@ -57,6 +60,32 @@ const Home4 = () => {
         return null;
       }
     };
+
+    const checkHospitalPharmacyStatus = async (web3, account) => {
+      try {
+        const networkId = await web3.eth.net.getId();
+        const networkData = PharmaChain.networks[networkId];
+        if (networkData) {
+          const contract = new web3.eth.Contract(PharmaChain.abi, networkData.address);
+          const hospitalpharmacy = await contract.methods.getHospitalPharmacy(account).call();
+          if (hospitalpharmacy.account.toLowerCase() === account.toLowerCase()) {
+            setIsHospitalPharmacy(true);
+          } else {
+            setIsHospitalPharmacy(false);
+          }
+        } else {
+          setIsHospitalPharmacy(false);
+        }
+      } catch (error) {
+        if (error.message.includes("Hospital/Pharmacy does not exist")) {
+          setIsHospitalPharmacy(false);
+        } else {
+          console.error('Error checking Hospital/Pharmacy status:', error);
+          setIsHospitalPharmacy(false);
+        }
+      }
+    };
+
 
     const loadContractData = async (web3) => {
       const networkId = await web3.eth.net.getId();
@@ -366,6 +395,12 @@ const Home4 = () => {
   };
 
   return (
+    <div>
+    {isHospitalPharmacy === null ? (
+      <div>Loading...</div>
+    ) : isHospitalPharmacy === false ? (
+      <div className="not-hospitalpharmacy-container">You are not a hospital/pharmacy</div>
+    ) : (
     <div className="home4-container">
       <div className="sidebar">
         <ul>
@@ -381,6 +416,8 @@ const Home4 = () => {
         {renderContent()}
       </div>
     </div>
+      )}
+     </div>
   );
 };
 
