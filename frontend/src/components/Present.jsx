@@ -11,7 +11,7 @@ const PendingRequests = () => {
     const fetchPendingRequests = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/admin/pending-requests');
-        const pending = response.data.filter(request => !request.status); 
+        const pending = response.data.filter(request => request.status); 
         setPendingRequests(pending);
         setLoading(false);
       } catch (err) {
@@ -25,7 +25,7 @@ const PendingRequests = () => {
 
   return (
     <div className="pending-requests-container">
-      <h2>Pending Requests</h2>
+      <h2>Current Stakeholders</h2>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -65,5 +65,3 @@ const PendingRequests = () => {
 };
 
 export default PendingRequests;
-
-

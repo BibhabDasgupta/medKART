@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import axios from 'axios';
 import PharmaChain from '../truffle_abis/PharmaChain.json';
 import './RegisterManufacturer.css';
 
@@ -89,6 +90,7 @@ class RegisterManufacturer extends Component {
         return;
       }
 
+      // Register manufacturer on blockchain
       await contract.methods.registerManufacturer(username, accountNumber).send({ from: account })
         .on('transactionHash', (hash) => {
           console.log('Transaction Hash:', hash);
@@ -105,6 +107,18 @@ class RegisterManufacturer extends Component {
           console.error('Error:', error);
           this.setState({ errorMessage: 'Failed to register manufacturer. Please try again.' });
         });
+
+      // Call acceptPendingStakeholder API
+      await axios.post('http://localhost:5000/api/pendingStakeholders/accept', { username })
+        .then(response => {
+          console.log('Stakeholder accepted:', response.data);
+          this.setState({ successMessage: `Stakeholder ${username} accepted successfully.` });
+        })
+        .catch(error => {
+          console.error('Error accepting stakeholder:', error);
+          this.setState({ errorMessage: 'Failed to accept stakeholder. Please try again.' });
+        });
+
     } catch (error) {
       console.error('Error registering manufacturer:', error);
       this.setState({ errorMessage: 'Failed to register manufacturer. Please try again.' });
@@ -157,6 +171,7 @@ class RegisterManufacturer extends Component {
 }
 
 export default RegisterManufacturer;
+
 
 
 

@@ -62,6 +62,8 @@ bun start
 # For Blockchain Integrations
 truffle compile
 truffle migrate --network development
+# or
+truffle migrate
 
 # For IoT Integration
 node iot.js

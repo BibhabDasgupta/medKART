@@ -73,56 +73,13 @@ exports.login = async (req, res) => {
 exports.pendingRequests = async (req, res) => {
   try {
     // Fetch all pending stakeholders from the database
-    const pendingStakeholders = await PendingStakeholder.find({ status: false }); // Assuming status = false means pending
+    const pendingStakeholders = await PendingStakeholder.find(); // Assuming status = false means pending
 
     if (pendingStakeholders.length === 0) {
       return res.status(404).json({ message: 'No pending stakeholders found' });
     }
 
     res.status(200).json(pendingStakeholders);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// exports.sendAN = async (req, res) => {
-//     const { username, accountNumber } = req.body;
-  
-//     try {
-//       const lowerCaseAccountNumber = accountNumber.toLowerCase();
-//       // Find the stakeholder by username and update the account number
-//       const updatedStakeholder = await PendingStakeholder.findOneAndUpdate(
-//         { username },
-//         { accountNumber: lowerCaseAccountNumber },
-//         { new: true } // Return the updated document
-//       );
-  
-//       if (!updatedStakeholder) {
-//         return res.status(404).json({ message: 'Stakeholder not found' });
-//       }
-  
-//       res.status(200).json({ message: 'Account number updated successfully', updatedStakeholder });
-//     } catch (err) {
-//       res.status(500).json({ error: err.message });
-//     }
-//   };
-
-exports.sendAN = async (req, res) => {
-  const { username, accountNumber } = req.body;
-
-  try {
-    // Store the account number in its original form
-    const updatedStakeholder = await PendingStakeholder.findOneAndUpdate(
-      { username },
-      { accountNumber },
-      { new: true } // Return the updated document
-    );
-
-    if (!updatedStakeholder) {
-      return res.status(404).json({ message: 'Stakeholder not found' });
-    }
-
-    res.status(200).json({ message: 'Account number updated successfully', updatedStakeholder });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

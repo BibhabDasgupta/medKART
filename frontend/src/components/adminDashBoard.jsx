@@ -32,6 +32,7 @@ const AdminDashboard = () => {
       <div className="sidebar">
         <ul>
           <li onClick={() => navigate('/admin/pending-requests')}>Pending Requests</li>
+          <li onClick={() => navigate('/admin/current-stakeholders')}>Current Stakeholders</li>
           <li onClick={() => navigate('/admin/register-manufacturer')}>Register Manufacturer</li>
           <li onClick={() => navigate('/admin/register-wholesaler')}>Register Wholesaler</li>
           <li onClick={() => navigate('/admin/register-distributor')}>Register Distributor</li>

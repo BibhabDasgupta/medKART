@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import PharmaChain from '../truffle_abis/PharmaChain.json';
+import axios from 'axios';
 import './RegisterHospitalPharmacy.css';
 
 class RegisterHospitalPharmacy extends Component {
@@ -85,10 +86,11 @@ class RegisterHospitalPharmacy extends Component {
       }
 
       if (account !== owner) {
-        this.setState({ errorMessage: 'You are not authorized to register hospital/pharmacies.' });
+        this.setState({ errorMessage: 'You are not authorized to register hospitals.' });
         return;
       }
 
+      // Register manufacturer on blockchain
       await contract.methods.registerHospitalPharmacy(username, accountNumber).send({ from: account })
         .on('transactionHash', (hash) => {
           console.log('Transaction Hash:', hash);
@@ -98,16 +100,28 @@ class RegisterHospitalPharmacy extends Component {
         })
         .on('receipt', (receipt) => {
           console.log('Receipt:', receipt);
-          this.setState({ successMessage: `Hospital/Pharmacy ${username} registered with account number ${accountNumber}` });
+          this.setState({ successMessage: `Hospital ${username} registered with account number ${accountNumber}` });
           this.setState({ username: '', accountNumber: '' });
         })
         .on('error', (error, receipt) => {
           console.error('Error:', error);
-          this.setState({ errorMessage: 'Failed to register hospital/pharmacy. Please try again.' });
+          this.setState({ errorMessage: 'Failed to register hospital. Please try again.' });
         });
+
+      // Call acceptPendingStakeholder API
+      await axios.post('http://localhost:5000/api/pendingStakeholders/accept', { username })
+        .then(response => {
+          console.log('Stakeholder accepted:', response.data);
+          this.setState({ successMessage: `Stakeholder ${username} accepted successfully.` });
+        })
+        .catch(error => {
+          console.error('Error accepting stakeholder:', error);
+          this.setState({ errorMessage: 'Failed to accept stakeholder. Please try again.' });
+        });
+
     } catch (error) {
-      console.error('Error registering hospital/pharmacy:', error);
-      this.setState({ errorMessage: 'Failed to register hospital/pharmacy. Please try again.' });
+      console.error('Error registering hospital:', error);
+      this.setState({ errorMessage: 'Failed to register hospital. Please try again.' });
     }
   };
 

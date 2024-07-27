@@ -10,6 +10,7 @@ const WholesalerDetailsForm = ({ onFormSubmit, onLogout }) => {
     email: '',
     mobileNumber: '',
     role: 'Wholesaler',
+    accountNumber: '',
   });
 
   const handleChange = (e) => {
@@ -54,6 +55,10 @@ const WholesalerDetailsForm = ({ onFormSubmit, onLogout }) => {
       <div className="form-group">
         <label htmlFor="role">Role:</label>
         <input type="text" id="role" name="role" value={formData.role} readOnly />
+      </div>
+      <div className="form-group">
+        <label htmlFor="accountNumber">Account Number:</label>
+        <input type="text" id="accountNumber" name="accountNumber" value={formData.accountNumber} onChange={handleChange} required />
       </div>
       <button type="submit" className="submit-button">Submit to Admin</button>
       <button type="button" className="logout-button" onClick={onLogout}>Logout</button>

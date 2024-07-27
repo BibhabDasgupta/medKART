@@ -34,6 +34,7 @@ import RegisterManufacturer from "./components/RegisterManufacturer";
 import RegisterWholesaler from "./components/RegisterWholesaler";
 import RegisterDistributor from "./components/RegisterDistributor";
 import RegisterHospitalPharmacy from "./components/RegisterHospitalPharmacy";
+import Present from "./components/Present";
 import Track from "./components/Track";
 import Iot from "./components/Iot";
 // App component
@@ -113,6 +114,10 @@ const App = () => {
           <Route
             path="/admin/pending-requests"
             element={<ProtectedRoute element={<PendingRequests />} />}
+          />
+          <Route
+            path="/admin/current-stakeholders"
+            element={<ProtectedRoute element={<Present />} />}
           />
           <Route
             path="/admin/register-manufacturer"

@@ -6,7 +6,6 @@ const { validateRegister, validateLogin } = require('../middlewares/validationMi
 router.post('/register', validateRegister, register);
 router.post('/login', validateLogin, login);
 router.get('/pending-requests', pendingRequests);
-router.post('/send-account-number', sendAN);
 router.get('/details', getAdminDetails);
 
 module.exports = router;

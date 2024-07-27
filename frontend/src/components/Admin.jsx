@@ -8,6 +8,7 @@ import RegisterManufacturer from './RegisterManufacturer';
 import RegisterWholesaler from './RegisterWholesaler';
 import RegisterDistributor from './RegisterDistributor';
 import RegisterHospitalPharmacy from './RegisterHospitalPharmacy';
+import Present from './Present';
 
 const Admin = () => {
   return (
@@ -17,6 +18,7 @@ const Admin = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/pending-requests" element={<PendingRequests />} />
+        <Route path="/current-stakeholders" element={<Present />} />
         <Route path="/register-manufacturer" element={<RegisterManufacturer />} />
         <Route path="/register-wholesaler" element={<RegisterWholesaler />} />
         <Route path="/register-distributor" element={<RegisterDistributor />} />

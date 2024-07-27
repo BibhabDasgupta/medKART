@@ -30,38 +30,11 @@ const DashBoard1 = () => {
         }
       } catch (error) {
         console.error('Error fetching pending status:', error);
-      }
-    };
-
-    fetchPendingStatus();
-  }, []);
-
-  useEffect(() => {
-    const fetchPendingStatus = async () => {
-      try {
-        const username = localStorage.getItem('username');
-        if (username) {
-          const response = await axios.get(`http://localhost:5000/api/pendingStakeholders/${username}`);
-          const data = response.data;
-
-          if (data) {
-            setAccountNumber(data.accountNumber); 
-          }
-        } else {
-          console.error('No username found in localStorage');
-        }
-      } catch (error) {
-        console.error('Error fetching pending status:', error);
       }finally {
-        setLoading(false); 
-      }
+        setLoading(false);}
     };
 
     fetchPendingStatus();
-
-    const interval = setInterval(fetchPendingStatus, 5000);
-
-    return () => clearInterval(interval);
   }, []);
 
   const handleLogout = () => {
@@ -74,21 +47,6 @@ const DashBoard1 = () => {
     setFormSubmitted(true);
   };
 
-  const handleAcceptAccountNumber = async () => {
-    try {
-      const username = localStorage.getItem('username');
-      if (username) {
-        await axios.post('http://localhost:5000/api/pendingStakeholders/accept', {username});
-        setIsAccepted(true);
-      } else {
-        console.error('No username found in localStorage');
-      }
-    } catch (error) {
-      console.error('Error accepting account number:', error);
-    }
-  };
-
-
   if (loading) {
     return <div>Loading...</div>;
     return null; 
@@ -100,7 +58,7 @@ const DashBoard1 = () => {
       <h2>Manufacturers Dashboard</h2>
       {status && formSubmitted ? (
         <div>
-          <p>You have successfully accepted the account number. Please logout and login with the approppriate metamask account again to continue.</p>
+          <p>Admin have successfully accepted your account number. Please logout and login with the approppriate metamask account again to continue.</p>
           <button className="logout-button" onClick={handleLogout}>Logout</button>
         </div>
       ) : (
@@ -108,11 +66,6 @@ const DashBoard1 = () => {
           {!status && formSubmitted ? (
             <div>
               <p>Your submission is pending approval. Please wait for further instructions.</p>
-              <p>Account Number: {accountNumber ? accountNumber : 'Not assigned yet'}</p>
-              {accountNumber && (
-                <button className="accept-button" onClick={handleAcceptAccountNumber}>Accept Account Number</button>
-              )}
-              {isAccepted && <p>Account number accepted. Please logout and login again with appropriate metamask account.</p>}
               <button className="logout-button" onClick={handleLogout}>Logout</button>
             </div>
           ) : (

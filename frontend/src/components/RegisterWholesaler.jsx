@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import axios from 'axios';
 import PharmaChain from '../truffle_abis/PharmaChain.json';
 import './RegisterWholesaler.css';
 
@@ -85,10 +86,11 @@ class RegisterWholesaler extends Component {
       }
 
       if (account !== owner) {
-        this.setState({ errorMessage: 'You are not authorized to register Wholesaler.' });
+        this.setState({ errorMessage: 'You are not authorized to register wholealers.' });
         return;
       }
 
+      // Register manufacturer on blockchain
       await contract.methods.registerWholesaler(username, accountNumber).send({ from: account })
         .on('transactionHash', (hash) => {
           console.log('Transaction Hash:', hash);
@@ -103,11 +105,23 @@ class RegisterWholesaler extends Component {
         })
         .on('error', (error, receipt) => {
           console.error('Error:', error);
-          this.setState({ errorMessage: 'Failed to register Wholesaler. Please try again.' });
+          this.setState({ errorMessage: 'Failed to register wholesaler. Please try again.' });
         });
+
+      // Call acceptPendingStakeholder API
+      await axios.post('http://localhost:5000/api/pendingStakeholders/accept', { username })
+        .then(response => {
+          console.log('Stakeholder accepted:', response.data);
+          this.setState({ successMessage: `Stakeholder ${username} accepted successfully.` });
+        })
+        .catch(error => {
+          console.error('Error accepting stakeholder:', error);
+          this.setState({ errorMessage: 'Failed to accept stakeholder. Please try again.' });
+        });
+
     } catch (error) {
-      console.error('Error registering Wholesaler:', error);
-      this.setState({ errorMessage: 'Failed to register Wholesaler. Please try again.' });
+      console.error('Error registering wholesaler:', error);
+      this.setState({ errorMessage: 'Failed to register wholesaler. Please try again.' });
     }
   };
 

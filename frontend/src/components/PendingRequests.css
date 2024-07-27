@@ -1,4 +1,4 @@
-.pending-requests-container {
+/* .pending-requests-container {
     padding: 20px;
   }
   
@@ -36,19 +36,27 @@
     margin-right: 5px;
     flex: 1;
   }
-  
-  .requests-table button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
+   */
+
+   .pending-requests-container {
+    padding: 20px;
   }
   
-  .requests-table button:hover {
-    background-color: #0056b3;
+  .requests-table {
+    width: 100%;
+    border-collapse: collapse;
   }
   
-  .actions button{
-    width: 300px;
+  .requests-table th, .requests-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
   }
+  
+  .requests-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .requests-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
