@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';  // Import CSS for styling
 
 const Home = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div 
       className="home-container"
@@ -14,8 +20,13 @@ const Home = () => {
       }}
     >
       <header className="home-header">
+        <div className="hamburger" onClick={toggleMenu}>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
         <nav>
-          <ul>
+          <ul className={isOpen ? 'open' : ''}>
             <li><Link to="/manufacturers">Manufacturers</Link></li>
             <li><Link to="/wholesalers">Wholesalers</Link></li>
             <li><Link to="/distributors">Distributors</Link></li>
@@ -35,3 +46,4 @@ const Home = () => {
 }
 
 export default Home;
+

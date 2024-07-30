@@ -8,7 +8,7 @@ const Login2 = () => {
     username: '',
     password: '',
   });
-
+  const [focusedField, setFocusedField] = useState('');
   const [error, setError] = useState(''); 
   const navigate = useNavigate();
 
@@ -17,6 +17,10 @@ const Login2 = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleFocus = (fieldName) => {
+    setFocusedField(fieldName);
   };
 
   const handleSubmit = async (e) => {
@@ -41,19 +45,32 @@ const Login2 = () => {
     navigate('/');
   };
 
+  const getInstruction = () => {
+    switch (focusedField) {
+      case 'username':
+        return 'Username should be at least 3 characters long.';
+      case 'password':
+        return 'Password should be at least 6 characters long.';
+      default:
+        return '';
+    }
+  };
+
+
   return (
     <div className="login-card">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Username:</label>
-          <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} required />
+          <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} onFocus={() => handleFocus('username')} required />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
+          <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} onFocus={() => handleFocus('password')} required />
         </div>
         {error && <p className="error-message">{error}</p>} 
+        <p className="instruction">{getInstruction()}</p>
         <button type="submit">Login</button>
       </form>
       <br></br>
