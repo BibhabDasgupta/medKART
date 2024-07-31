@@ -9192,12 +9192,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x39627D4215e5F453aDee9BE20A0dF556caF42081",
-      "transactionHash": "0xe926acc730e1fd7133adf6a7bc0fe170ebbda9d7b4a30eb99b370ef0369faaf2"
+      "address": "0xc8bD541348E82A04A9d4399fFfAa9b400DBCAcE1",
+      "transactionHash": "0xa96363bf202debf5ce8225e0e0fff977b080c27cb4cc2c21882b169b30645484"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2024-07-27T13:34:30.678Z",
+  "updatedAt": "2024-07-30T17:07:40.973Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

@@ -1,11 +1,22 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const Manufacturer = require('../models/Manufacturer');
-const { registerSchema, loginSchema } = require('../utils/zodValidation');
-const config = require('../config/config');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const Manufacturer = require("../models/Manufacturer");
+const Wholesaler = require("../models/Wholesaler");
+const Distributor = require("../models/Distributor");
+const HospitalsPharmacies = require("../models/HospitalsPharmacies");
+const { registerSchema, loginSchema } = require("../utils/zodValidation");
+const config = require("../config/config");
 
 exports.register = async (req, res) => {
-  const { actualName, address, email, mobileNumber, username, password, confirmPassword } = req.body;
+  const {
+    actualName,
+    address,
+    email,
+    mobileNumber,
+    username,
+    password,
+    confirmPassword,
+  } = req.body;
 
   // Validate request body
   const validation = registerSchema.safeParse(req.body);
@@ -16,8 +27,23 @@ exports.register = async (req, res) => {
   // Check if manufacturer already exists
   const emailExists = await Manufacturer.findOne({ email });
   const usernameExists = await Manufacturer.findOne({ username });
-  if (emailExists || usernameExists) {
-    return res.status(400).send('Email or Username already exists');
+  const emailExists1 = await Wholesaler.findOne({ email });
+  const usernameExists1 = await Wholesaler.findOne({ username });
+  const emailExists2 = await Distributor.findOne({ email });
+  const usernameExists2 = await Distributor.findOne({ username });
+  const emailExists3 = await HospitalsPharmacies.findOne({ email });
+  const usernameExists3 = await HospitalsPharmacies.findOne({ username });
+  if (
+    emailExists ||
+    usernameExists ||
+    emailExists1 ||
+    usernameExists1 ||
+    emailExists2 ||
+    usernameExists2 ||
+    emailExists3 ||
+    usernameExists3
+  ) {
+    return res.status(400).send("Email or Username already exists");
   }
 
   // Hash the password
@@ -54,16 +80,18 @@ exports.login = async (req, res) => {
   // Check if the manufacturer exists
   const manufacturer = await Manufacturer.findOne({ username });
   if (!manufacturer) {
-    return res.status(400).send('Username not found');
+    return res.status(400).send("Username not found");
   }
 
   // Validate password
   const validPass = await bcrypt.compare(password, manufacturer.password);
   if (!validPass) {
-    return res.status(400).send('Invalid password');
+    return res.status(400).send("Invalid password");
   }
 
   // Create and assign a token
-  const token = jwt.sign({ _id: manufacturer._id }, config.jwtSecret, { expiresIn: '1h' });
-  res.header('auth-token', token).send({ token });
+  const token = jwt.sign({ _id: manufacturer._id }, config.jwtSecret, {
+    expiresIn: "1h",
+  });
+  res.header("auth-token", token).send({ token });
 };

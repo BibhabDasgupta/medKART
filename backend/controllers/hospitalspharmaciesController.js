@@ -1,6 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const HospitalsPharmacies = require('../models/HospitalsPharmacies');
+const Manufacturer = require("../models/Manufacturer");
+const Wholesaler = require("../models/Wholesaler");
+const Distributor = require("../models/Distributor");
+const HospitalsPharmacies = require("../models/HospitalsPharmacies");
 const { registerSchema, loginSchema } = require('../utils/zodValidation');
 const config = require('../config/config');
 
@@ -14,10 +17,25 @@ exports.register = async (req, res) => {
   }
 
   // Check if manufacturer already exists
-  const emailExists = await HospitalsPharmacies.findOne({ email });
-  const usernameExists = await HospitalsPharmacies.findOne({ username });
-  if (emailExists || usernameExists) {
-    return res.status(400).send('Email or Username already exists');
+  const emailExists = await Manufacturer.findOne({ email });
+  const usernameExists = await Manufacturer.findOne({ username });
+  const emailExists1 = await Wholesaler.findOne({ email });
+  const usernameExists1 = await Wholesaler.findOne({ username });
+  const emailExists2 = await Distributor.findOne({ email });
+  const usernameExists2 = await Distributor.findOne({ username });
+  const emailExists3 = await HospitalsPharmacies.findOne({ email });
+  const usernameExists3 = await HospitalsPharmacies.findOne({ username });
+  if (
+    emailExists ||
+    usernameExists ||
+    emailExists1 ||
+    usernameExists1 ||
+    emailExists2 ||
+    usernameExists2 ||
+    emailExists3 ||
+    usernameExists3
+  ) {
+    return res.status(400).send("Email or Username already exists");
   }
 
   // Hash the password
