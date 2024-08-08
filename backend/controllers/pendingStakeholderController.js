@@ -71,3 +71,21 @@ exports.getPendingStakeholderByUsername = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   };
+
+
+  exports.removeStakeholder = async (req, res) => {
+    const stakeholderId = req.params.id; 
+    try {
+      const removedStakeholder = await PendingStakeholder.findByIdAndDelete(stakeholderId);
+      
+      if (!removedStakeholder) {
+        return res.status(404).json({ error: 'Stakeholder not found' });
+      }
+  
+      res.status(200).json({ message: 'Stakeholder removed successfully' });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: err.message });
+    }
+  };
+  

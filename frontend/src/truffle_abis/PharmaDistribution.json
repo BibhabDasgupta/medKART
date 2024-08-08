@@ -48273,12 +48273,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x746ae8F90F71CF454499F842Ebb256e26DFfe392",
-      "transactionHash": "0x8c973e085347e25572ecf4723ac888385aca4071712e194dcdc59a981ecde075"
+      "address": "0xBA509f0407B1699a09B4ef7DE72fD6304Cb9284C",
+      "transactionHash": "0xd4075f94a682f7f12464e88ed8c90f00a7440814f1e045656536d585f5b932fc"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2024-07-30T17:07:41.001Z",
+  "updatedAt": "2024-08-08T11:34:06.773Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

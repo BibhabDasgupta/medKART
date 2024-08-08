@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import Web3 from 'web3';
-import PharmaChain from '../truffle_abis/PharmaChain.json';
-import axios from 'axios';
-import './RegisterDistributor.css';
+import React, { Component } from "react";
+import Web3 from "web3";
+import PharmaChain from "../truffle_abis/PharmaChain.json";
+import axios from "axios";
+import "./RegisterDistributor.css";
+import Sidebar from "./Sidebar";
 
 class RegisterDistributor extends Component {
   async componentWillMount() {
@@ -14,44 +15,52 @@ class RegisterDistributor extends Component {
     try {
       const web3 = window.web3;
       if (!web3) {
-        console.error('Web3 instance not found');
-        this.setState({ errorMessage: 'Web3 instance not found' });
+        console.error("Web3 instance not found");
+        this.setState({ errorMessage: "Web3 instance not found" });
         return;
       }
 
       const accounts = await web3.eth.getAccounts();
       if (!accounts.length) {
-        console.error('No accounts found');
-        this.setState({ errorMessage: 'No accounts found' });
+        console.error("No accounts found");
+        this.setState({ errorMessage: "No accounts found" });
         return;
       }
       const currentAccount = accounts[0];
-      console.log('Current Account:', currentAccount);
+      console.log("Current Account:", currentAccount);
       this.setState({ account: currentAccount });
 
       const networkId = await web3.eth.net.getId();
-      console.log('Network ID:', networkId);
+      console.log("Network ID:", networkId);
 
       const networkData = PharmaChain.networks[networkId];
       if (networkData) {
-        const contract = new web3.eth.Contract(PharmaChain.abi, networkData.address);
-        console.log('Contract Address:', networkData.address);
+        const contract = new web3.eth.Contract(
+          PharmaChain.abi,
+          networkData.address
+        );
+        console.log("Contract Address:", networkData.address);
         this.setState({ contract, web3 });
 
         const owner = await contract.methods.owner().call();
-        console.log('Owner Address:', owner);
+        console.log("Owner Address:", owner);
         this.setState({ owner });
         if (currentAccount !== owner) {
-          console.error('You are not authorized to register distributors.');
-          this.setState({ errorMessage: 'You are not authorized to register distributors.' });
+          console.error("You are not authorized to register distributors.");
+          this.setState({
+            errorMessage: "You are not authorized to register distributors.",
+          });
         }
       } else {
-        console.error('PharmaChain contract not deployed to detected network.');
-        this.setState({ errorMessage: 'PharmaChain contract not deployed to detected network.' });
+        console.error("PharmaChain contract not deployed to detected network.");
+        this.setState({
+          errorMessage:
+            "PharmaChain contract not deployed to detected network.",
+        });
       }
     } catch (error) {
-      console.error('Error loading blockchain data:', error);
-      this.setState({ errorMessage: 'Failed to load blockchain data.' });
+      console.error("Error loading blockchain data:", error);
+      this.setState({ errorMessage: "Failed to load blockchain data." });
     }
   }
 
@@ -60,17 +69,22 @@ class RegisterDistributor extends Component {
       if (window.ethereum) {
         window.web3 = new Web3(window.ethereum);
         await window.ethereum.enable();
-        console.log('Ethereum enabled');
+        console.log("Ethereum enabled");
       } else if (window.web3) {
         window.web3 = new Web3(window.web3.currentProvider);
-        console.log('Web3 current provider enabled');
+        console.log("Web3 current provider enabled");
       } else {
-        console.error('Non-Ethereum browser detected. You should consider trying MetaMask!');
-        this.setState({ errorMessage: 'Non-Ethereum browser detected. You should consider trying MetaMask!' });
+        console.error(
+          "Non-Ethereum browser detected. You should consider trying MetaMask!"
+        );
+        this.setState({
+          errorMessage:
+            "Non-Ethereum browser detected. You should consider trying MetaMask!",
+        });
       }
     } catch (error) {
-      console.error('Error loading Web3:', error);
-      this.setState({ errorMessage: 'Failed to load Web3 instance.' });
+      console.error("Error loading Web3:", error);
+      this.setState({ errorMessage: "Failed to load Web3 instance." });
     }
   }
 
@@ -80,91 +94,117 @@ class RegisterDistributor extends Component {
       const { contract, account, username, accountNumber, owner } = this.state;
 
       if (!contract) {
-        console.error('Contract instance not initialized');
-        this.setState({ errorMessage: 'Blockchain contract instance not initialized.' });
+        console.error("Contract instance not initialized");
+        this.setState({
+          errorMessage: "Blockchain contract instance not initialized.",
+        });
         return;
       }
 
       if (account !== owner) {
-        this.setState({ errorMessage: 'You are not authorized to register distributors.' });
+        this.setState({
+          errorMessage: "You are not authorized to register distributors.",
+        });
         return;
       }
 
       // Register manufacturer on blockchain
-      await contract.methods.registerDistributor(username, accountNumber).send({ from: account })
-        .on('transactionHash', (hash) => {
-          console.log('Transaction Hash:', hash);
+      await contract.methods
+        .registerDistributor(username, accountNumber)
+        .send({ from: account })
+        .on("transactionHash", (hash) => {
+          console.log("Transaction Hash:", hash);
         })
-        .on('confirmation', (confirmationNumber, receipt) => {
-          console.log('Confirmation Number:', confirmationNumber);
+        .on("confirmation", (confirmationNumber, receipt) => {
+          console.log("Confirmation Number:", confirmationNumber);
         })
-        .on('receipt', (receipt) => {
-          console.log('Receipt:', receipt);
-          this.setState({ successMessage: `Distributor ${username} registered with account number ${accountNumber}` });
-          this.setState({ username: '', accountNumber: '' });
+        .on("receipt", (receipt) => {
+          console.log("Receipt:", receipt);
+          this.setState({
+            successMessage: `Distributor ${username} registered with account number ${accountNumber}`,
+          });
+          this.setState({ username: "", accountNumber: "" });
         })
-        .on('error', (error, receipt) => {
-          console.error('Error:', error);
-          this.setState({ errorMessage: 'Failed to register distributor. Please try again.' });
+        .on("error", (error, receipt) => {
+          console.error("Error:", error);
+          this.setState({
+            errorMessage: "Failed to register distributor. Please try again.",
+          });
         });
 
       // Call acceptPendingStakeholder API
-      await axios.post('http://localhost:5000/api/pendingStakeholders/accept', { username })
-        .then(response => {
-          console.log('Stakeholder accepted:', response.data);
-          this.setState({ successMessage: `Stakeholder ${username} accepted successfully.` });
+      await axios
+        .post("http://localhost:5000/api/pendingStakeholders/accept", {
+          username,
         })
-        .catch(error => {
-          console.error('Error accepting stakeholder:', error);
-          this.setState({ errorMessage: 'Failed to accept stakeholder. Please try again.' });
+        .then((response) => {
+          console.log("Stakeholder accepted:", response.data);
+          this.setState({
+            successMessage: `Stakeholder ${username} accepted successfully.`,
+          });
+        })
+        .catch((error) => {
+          console.error("Error accepting stakeholder:", error);
+          this.setState({
+            errorMessage: "Failed to accept stakeholder. Please try again.",
+          });
         });
-
     } catch (error) {
-      console.error('Error registering distributor:', error);
-      this.setState({ errorMessage: 'Failed to register distributor. Please try again.' });
+      console.error("Error registering distributor:", error);
+      this.setState({
+        errorMessage: "Failed to register distributor. Please try again.",
+      });
     }
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      account: '',
+      account: "",
       contract: null,
-      owner: '',
-      username: '',
-      accountNumber: '',
-      successMessage: '',
-      errorMessage: ''
+      owner: "",
+      username: "",
+      accountNumber: "",
+      successMessage: "",
+      errorMessage: "",
     };
   }
 
   render() {
     return (
-      <div className="register-container">
-        <h2>Register Distributor</h2>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            <label>Username:</label>
-            <input
-              type="text"
-              value={this.state.username}
-              onChange={(e) => this.setState({ username: e.target.value })}
-              required
-            />
-          </div>
-          <div>
-            <label>Account Number:</label>
-            <input
-              type="text"
-              value={this.state.accountNumber}
-              onChange={(e) => this.setState({ accountNumber: e.target.value })}
-              required
-            />
-          </div>
-          <button type="submit">Register</button>
-        </form>
-        {this.state.successMessage && <p>{this.state.successMessage}</p>}
-        {this.state.errorMessage && <p>{this.state.errorMessage}</p>}
+      <div style={{
+        display:"flex",
+        height:"100vh"
+      }}>
+        <Sidebar/>
+        <div className="register-container">
+          <h2>Register Distributor</h2>
+          <form onSubmit={this.handleSubmit}>
+            <div>
+              <label>Username:</label>
+              <input
+                type="text"
+                value={this.state.username}
+                onChange={(e) => this.setState({ username: e.target.value })}
+                required
+              />
+            </div>
+            <div>
+              <label>Account Number:</label>
+              <input
+                type="text"
+                value={this.state.accountNumber}
+                onChange={(e) =>
+                  this.setState({ accountNumber: e.target.value })
+                }
+                required
+              />
+            </div>
+            <button type="submit">Register</button>
+          </form>
+          {this.state.successMessage && <p>{this.state.successMessage}</p>}
+          {this.state.errorMessage && <p>{this.state.errorMessage}</p>}
+        </div>
       </div>
     );
   }

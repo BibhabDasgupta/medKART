@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './adminDashBoard.css';
 import axios from 'axios';
+import Sidebar from './Sidebar';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -29,17 +30,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="dashboardcontainer">
-      <div className="sidebar">
-        <ul>
-          <li onClick={() => navigate('/admin/pending-requests')}>Pending Requests</li>
-          <li onClick={() => navigate('/admin/current-stakeholders')}>Current Stakeholders</li>
-          <li onClick={() => navigate('/admin/register-manufacturer')}>Register Manufacturer</li>
-          <li onClick={() => navigate('/admin/register-wholesaler')}>Register Wholesaler</li>
-          <li onClick={() => navigate('/admin/register-distributor')}>Register Distributor</li>
-          <li onClick={() => navigate('/admin/register-hospital-pharmacy')}>Register Hospital/Pharmacy</li>
-          <li onClick={handleLogout}>Logout</li>
-        </ul>
-      </div>
+      <Sidebar/>
       <div className="content">
         <h2>Admin Dashboard</h2>
         <p>Welcome to the admin dashboard. Please select an option from the left panel.</p>
