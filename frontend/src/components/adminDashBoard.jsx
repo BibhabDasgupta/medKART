@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import './adminDashBoard.css';
 import axios from 'axios';
 import Sidebar from './Sidebar';
+import Loader from './Loader';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="dashboardcontainer">
-      <Sidebar/>
+      <Sidebar />
       <div className="content">
         <h2>Admin Dashboard</h2>
         <p>Welcome to the admin dashboard. Please select an option from the left panel.</p>
@@ -44,7 +45,7 @@ const AdminDashboard = () => {
             <p><strong>Mobile Number:</strong> {adminDetails.mobileNumber}</p>
           </div>
         ) : (
-          <p>Loading admin details...</p>
+          <Loader />
         )}
       </div>
     </div>

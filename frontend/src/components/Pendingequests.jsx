@@ -181,6 +181,7 @@ import Web3 from "web3";
 import Sidebar from "./Sidebar";
 import PharmaChain from "../truffle_abis/PharmaChain.json";
 import "./PendingRequests.css";
+import Loader from "./Loader";
 
 const PendingRequests = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
@@ -284,7 +285,7 @@ const PendingRequests = () => {
   const handleReject = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/api/pendingStakeholders/reject/${id}`);
-      
+
       const updatedRequests = pendingRequests.filter(
         (request) => request._id !== id
       );
@@ -295,12 +296,16 @@ const PendingRequests = () => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "1fr 8fr",
+      height: "100vh"
+    }}>
       <Sidebar />
       <div className="pending-requests-container">
         <h2>Pending Requests</h2>
         {loading ? (
-          <p>Loading...</p>
+          <Loader />
         ) : error ? (
           <p>Error loading requests: {error}</p>
         ) : pendingRequests.length === 0 ? (

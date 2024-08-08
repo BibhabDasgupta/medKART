@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ManufacturerDetailsForm from './ManufacturerDetails';
 import './DashBoard1.css';
+import Loader from './Loader';
 
 const DashBoard1 = () => {
   const [loading, setLoading] = useState(true);
@@ -30,8 +31,9 @@ const DashBoard1 = () => {
         }
       } catch (error) {
         console.error('Error fetching pending status:', error);
-      }finally {
-        setLoading(false);}
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchPendingStatus();
@@ -39,7 +41,7 @@ const DashBoard1 = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('auth-token');
-    localStorage.removeItem('username'); 
+    localStorage.removeItem('username');
     navigate('/');
   };
 
@@ -48,8 +50,8 @@ const DashBoard1 = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
-    return null; 
+    return <div><Loader /></div>;
+    return null;
   }
 
 
@@ -72,7 +74,7 @@ const DashBoard1 = () => {
             <ManufacturerDetailsForm onFormSubmit={handleFormSubmit} onLogout={handleLogout} />
           )}
         </>
-       )} 
+      )}
     </div>
   );
 }

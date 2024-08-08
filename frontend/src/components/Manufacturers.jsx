@@ -7,6 +7,7 @@ import Register from './Register1';
 import DashBoard from './DashBoard1';
 import Home1 from './Home1';
 import withNavigation from './withNavigation'; // Import the HOC
+import Loader from './Loader';
 
 class Manufacturers extends Component {
   constructor(props) {
@@ -57,7 +58,8 @@ class Manufacturers extends Component {
         console.log('Manufacturer:', manufacturer);
         if (manufacturer.account.toLowerCase() === this.state.currentAccount.toLowerCase()) {
           this.setState({ isManufacturer: true }, () => {
-            console.log('Updated isManufacturer to true');});
+            console.log('Updated isManufacturer to true');
+          });
         } else {
           this.setState({ isManufacturer: false });
         }
@@ -80,7 +82,7 @@ class Manufacturers extends Component {
     console.log('Is Manufacturer:', this.state.isManufacturer);
     console.log('Previous Is Manufacturer:', prevState.isManufacturer);
     if (this.state.isManufacturer !== prevState.isManufacturer && this.state.isManufacturer !== null) {
-      if (this.state.isManufacturer===true) {
+      if (this.state.isManufacturer === true) {
         this.props.navigate('/manufacturers/home');
       } else {
         this.props.navigate('/manufacturers/login');
@@ -94,7 +96,7 @@ class Manufacturers extends Component {
     return (
       <div className="manufacturers-container">
         {loading || isManufacturer === null ? (
-          <p>Loading...</p>
+          <Loader />
         ) : (
           <Routes>
             <Route path="/" element={<Login />} />

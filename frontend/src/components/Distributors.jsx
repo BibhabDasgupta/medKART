@@ -7,6 +7,7 @@ import Register from './Register3';
 import DashBoard from './DashBoard3';
 import Home3 from './Home3';
 import withNavigation from './withNavigation'; // Import the HOC
+import Loader from './Loader';
 
 class Distributors extends Component {
   constructor(props) {
@@ -56,7 +57,8 @@ class Distributors extends Component {
         console.log('Distributor:', distributor);
         if (distributor.account.toLowerCase() === this.state.currentAccount.toLowerCase()) {
           this.setState({ isDistributor: true }, () => {
-            console.log('Updated isDistributor to true');});
+            console.log('Updated isDistributor to true');
+          });
         } else {
           this.setState({ isDistributor: false });
         }
@@ -79,7 +81,7 @@ class Distributors extends Component {
     console.log('Is Distributor:', this.state.isDistributor);
     console.log('Previous Is Distributor:', prevState.isDistributor);
     if (this.state.isDistributor !== prevState.isDistributor && this.state.isDistributor !== null) {
-      if (this.state.isDistributor===true) {
+      if (this.state.isDistributor === true) {
         this.props.navigate('/distributors/home');
       } else {
         this.props.navigate('/distributors/login');
@@ -93,7 +95,7 @@ class Distributors extends Component {
     return (
       <div className="distibutors-container">
         {loading || isDistributor === null ? (
-          <p>Loading...</p>
+          <p><Loader /></p>
         ) : (
           <Routes>
             <Route path="/" element={<Login />} />
