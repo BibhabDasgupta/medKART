@@ -7,6 +7,7 @@ import Register from './Register2';
 import DashBoard from './DashBoard2';
 import Home2 from './Home2';
 import withNavigation from './withNavigation'; // Import the HOC
+import Loader from './Loader';
 
 class Wholesalers extends Component {
   constructor(props) {
@@ -56,7 +57,8 @@ class Wholesalers extends Component {
         console.log('Wholesaler:', wholesaler);
         if (wholesaler.account.toLowerCase() === this.state.currentAccount.toLowerCase()) {
           this.setState({ isWholesaler: true }, () => {
-            console.log('Updated isWholesaler to true');});
+            console.log('Updated isWholesaler to true');
+          });
         } else {
           this.setState({ isWholesaler: false });
         }
@@ -79,7 +81,7 @@ class Wholesalers extends Component {
     console.log('Is Wholesaler:', this.state.isWholesaler);
     console.log('Previous Is Wholesaler:', prevState.isWholesaler);
     if (this.state.isWholesaler !== prevState.isWholesaler && this.state.isWholesaler !== null) {
-      if (this.state.isWholesaler===true) {
+      if (this.state.isWholesaler === true) {
         this.props.navigate('/wholesalers/home');
       } else {
         this.props.navigate('/wholesalers/login');
@@ -93,7 +95,7 @@ class Wholesalers extends Component {
     return (
       <div className="wholesalerss-container">
         {loading || isWholesaler === null ? (
-          <p>Loading...</p>
+          <Loader />
         ) : (
           <Routes>
             <Route path="/" element={<Login />} />

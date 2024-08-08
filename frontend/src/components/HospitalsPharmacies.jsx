@@ -7,6 +7,7 @@ import Register from './Register4';
 import DashBoard from './DashBoard4';
 import Home4 from './Home4';
 import withNavigation from './withNavigation'; // Import the HOC
+import Loader from './Loader';
 
 class HospitalsPharmacies extends Component {
   constructor(props) {
@@ -56,7 +57,8 @@ class HospitalsPharmacies extends Component {
         console.log('HospitalPharmacy:', hospitalpharmacy);
         if (hospitalpharmacy.account.toLowerCase() === this.state.currentAccount.toLowerCase()) {
           this.setState({ isHospitalPharmacy: true }, () => {
-            console.log('Updated isHospitalPharmacy to true');});
+            console.log('Updated isHospitalPharmacy to true');
+          });
         } else {
           this.setState({ isHospitalPharmacy: false });
         }
@@ -79,7 +81,7 @@ class HospitalsPharmacies extends Component {
     console.log('Is Hospital/Pharmacy:', this.state.isHospitalPharmacy);
     console.log('Previous Is Hospital/Pharmacy:', prevState.isHospitalPharmacy);
     if (this.state.isHospitalPharmacy !== prevState.isHospitalPharmacy && this.state.isHospitalPharmacy !== null) {
-      if (this.state.isHospitalPharmacy===true) {
+      if (this.state.isHospitalPharmacy === true) {
         this.props.navigate('/hospitalspharmacies/home');
       } else {
         this.props.navigate('/hospitalspharmacies/login');
@@ -93,7 +95,7 @@ class HospitalsPharmacies extends Component {
     return (
       <div className="hospitalspharmacies-container">
         {loading || isHospitalPharmacy === null ? (
-          <p>Loading...</p>
+          <Loader />
         ) : (
           <Routes>
             <Route path="/" element={<Login />} />

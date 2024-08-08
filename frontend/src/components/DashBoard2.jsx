@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import WholesalerDetailsForm from './WholesalerDetails';
 import './DashBoard2.css';
+import Loader from './Loader';
 
 const DashBoard2 = () => {
   const [loading, setLoading] = useState(true);
@@ -30,7 +31,7 @@ const DashBoard2 = () => {
         }
       } catch (error) {
         console.error('Error fetching pending status:', error);
-      }finally {
+      } finally {
         setLoading(false); // Set loading to false after fetching data
       }
     };
@@ -50,12 +51,12 @@ const DashBoard2 = () => {
 
 
   if (loading) {
-    return <div>Loading...</div>;
-    return null; 
+    return <div><Loader /></div>;
+    return null;
   }
 
-  
- 
+
+
 
   return (
     <div className="dashboard-container">

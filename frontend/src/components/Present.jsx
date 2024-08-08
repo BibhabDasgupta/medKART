@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./PendingRequests.css"; // Import the CSS file for styling
 import Sidebar from "./Sidebar";
+import Loader from "./Loader";
+
 
 const PendingRequests = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
@@ -28,14 +30,18 @@ const PendingRequests = () => {
 
   return (
     <div style={{
-      display:"flex",
-      height:"100vh"
+      display: "grid",
+      gridTemplateColumns: "1fr 8fr",
+      height: "100vh"
     }}>
-      <Sidebar/>
+      <Sidebar />
       <div className="pending-requests-container">
         <h2>Current Stakeholders</h2>
         {loading ? (
-          <p>Loading...</p>
+          // <p>Loading...</p>
+          <div className="loading">
+            <Loader />
+          </div>
         ) : error ? (
           <p>Error loading requests: {error}</p>
         ) : pendingRequests.length === 0 ? (
@@ -69,7 +75,7 @@ const PendingRequests = () => {
           </table>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 
