@@ -17,18 +17,6 @@ const Sidebar = () => {
         <li onClick={() => navigate("/admin/current-stakeholders")}>
           Current Stakeholders
         </li>
-        <li onClick={() => navigate("/admin/register-manufacturer")}>
-          Register Manufacturer
-        </li>
-        <li onClick={() => navigate("/admin/register-wholesaler")}>
-          Register Wholesaler
-        </li>
-        <li onClick={() => navigate("/admin/register-distributor")}>
-          Register Distributor
-        </li>
-        <li onClick={() => navigate("/admin/register-hospital-pharmacy")}>
-          Register Hospital/Pharmacy
-        </li>
         <li onClick={handleLogout}>Logout</li>
       </ul>
     </div>
