@@ -1,4 +1,4 @@
-.form-container {
+/* .form-container {
     max-width: 500px;
     margin: 0 auto;
     padding: 20px;
@@ -39,5 +39,70 @@
   
   .submit-button:hover {
     background-color: #0056b3;
+  }
+   */
+   .details-form {
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+    margin-bottom: 20px!important;
+    padding: 0px!important;
+    border-radius: 10px;
+    background: transparent!important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 0px rgba(245, 245, 245, 0.3);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .form-group {
+    margin-bottom: 10px!important;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #fff;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+  
+  .submit-button {
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .logout-button {
+    margin-top: 15px;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .logout-button:hover {
+    background-color: #e84118;
   }
   

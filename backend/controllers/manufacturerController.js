@@ -95,3 +95,30 @@ exports.login = async (req, res) => {
   });
   res.header("auth-token", token).send({ token });
 };
+
+exports.fetchDetails = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    // Find the manufacturer by username
+    const manufacturer = await Manufacturer.findOne({ username });
+
+    if (!manufacturer) {
+      return res.status(404).send("Manufacturer not found");
+    }
+
+    // Send the manufacturer details (excluding the password)
+    res.json({
+      username: manufacturer.username,
+      name: manufacturer.actualName,
+      address: manufacturer.address,
+      email: manufacturer.email,
+      mobileNumber: manufacturer.mobileNumber,
+      role: "Manufacturer",
+      formSubmitted: manufacturer.formSubmitted,
+      status: manufacturer.status
+    });
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+};

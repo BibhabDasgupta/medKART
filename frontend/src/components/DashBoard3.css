@@ -1,73 +1,63 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-image: url('./img/backky.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .dashboard-container {
-    padding: 20px;
-    max-width: 500px;
-    margin: 0 auto;
-    position: relative;
-    background-color: #f9f9f9; /* Optional: to differentiate the container */
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 10px!important;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  p {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Form Styling */
-  .details-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-    width: 100%;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .submit-button, .logout-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-    margin-top: 10px;
-    width: 100%; /* Ensures buttons are the same size */
-  }
-  
-  .submit-button:hover {
-    background-color: #218838;
-  }
-  
-  .logout-button {
-    background-color: #ff4b5c;
-  }
-  
-  .logout-button:hover {
-    background-color: #ff1f3a;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Ensures the container covers the full height of the viewport */
+  width: 100%; /* Ensure it spans the full width */
+  background: transparent!important;
+  margin-bottom: 20px!important; /* Keeps the container's background transparent */
+}
+
+.dashboard-content {
+  width: 100%!important;
+  /* max-width: 500px; */
+  /* margin: 20px auto; */
+  margin-bottom: 20px!important; 
+  padding: 0px!important;
+  border-radius: 10px;
+  background: transparent!important;    
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(245, 245, 245, 0.3); /* Added shadow for a subtle effect */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dashboard-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.logout-button {
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.logout-button:hover {
+  background-color: #0056b3;
+}
+
+p {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 16px;
+}

@@ -84,3 +84,30 @@ exports.login = async (req, res) => {
   const token = jwt.sign({ _id: distributor._id }, config.jwtSecret, { expiresIn: '1h' });
   res.header('auth-token', token).send({ token });
 };
+
+exports.fetchDetails = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    // Find the manufacturer by username
+    const distributor = await Distributor.findOne({ username });
+
+    if (!distributor) {
+      return res.status(404).send("Distributor not found");
+    }
+
+    // Send the manufacturer details (excluding the password)
+    res.json({
+      username: distributor.username,
+      name:distributor.actualName,
+      address: distributor.address,
+      email: distributor.email,
+      mobileNumber: distributor.mobileNumber,
+      role: "Distributor",
+      formSubmitted: distributor.formSubmitted,
+      status: distributor.status
+    });
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+};

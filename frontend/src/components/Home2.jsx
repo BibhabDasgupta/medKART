@@ -28,182 +28,6 @@ const Home2 = () => {
   const [isWholesaler, setIsWholesaler] = useState(null);
 
 
-  // useEffect(() => {
-  //   const loadWeb3 = async () => {
-  //     if (window.ethereum) {
-  //       const web3 = new Web3(window.ethereum);
-  //       const accounts = await window.ethereum.request({
-  //         method: "eth_requestAccounts",
-  //       });
-  //       console.log("Accounts from MetaMask:", accounts[0]);
-  //       setCurrentAccount(accounts[0]);
-  //       fetchAccountDetails(accounts[0]);
-  //       await checkWholesalerStatus(web3, accounts[0]);
-  //       await loadContractData(web3);
-  //     } else if (window.web3) {
-  //       const web3 = new Web3(window.web3.currentProvider);
-  //       const accounts = await web3.eth.getAccounts();
-  //       console.log("Accounts from MetaMask (legacy):", accounts);
-  //       setCurrentAccount(accounts[0]);
-  //       fetchAccountDetails(accounts[0]);
-  //       await checkWholesalerStatus(web3, accounts[0]);
-  //       await loadContractData(web3);
-  //     } else {
-  //       console.error(
-  //         "Non-Ethereum browser detected. You should consider trying MetaMask!"
-  //       );
-  //     }
-  //   };
-
-  //   const fetchAccountDetails = async (account) => {
-  //     try {
-  //       const response = await axios.post(
-  //         "http://localhost:5000/api/pendingStakeholders/find",
-  //         { accountNumber: account }
-  //       );
-  //       setAccountDetails(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching account details:", error);
-  //     }
-  //   };
-
-  //   const fetchDetails = async (url, username) => {
-  //     try {
-  //       const response = await axios.get(`${url}/${username}`);
-  //       return response.data;
-  //     } catch (error) {
-  //       console.error("Error fetching details:", error);
-  //       return null;
-  //     }
-  //   };
-
-  //   const checkWholesalerStatus = async (web3, account) => {
-  //     try {
-  //       const networkId = await web3.eth.net.getId();
-  //       const networkData = PharmaChain.networks[networkId];
-  //       if (networkData) {
-  //         const contract = new web3.eth.Contract(PharmaChain.abi, networkData.address);
-  //         const wholesaler = await contract.methods.getWholesaler(account).call();
-  //         if (wholesaler.account.toLowerCase() === account.toLowerCase()) {
-  //           setIsWholesaler(true);
-  //         } else {
-  //           setIsWholesaler(false);
-  //         }
-  //       } else {
-  //         setIsWholesaler(false);
-  //       }
-  //     } catch (error) {
-  //       if (error.message.includes("Wholesaler does not exist")) {
-  //         setIsWholesaler(false);
-  //       } else {
-  //         console.error('Error checking Wholesaler status:', error);
-  //         setIsWholesaler(false);
-  //       }
-  //     }
-  //   };
-
-  //   const loadContractData = async (web3) => {
-  //     const networkId = await web3.eth.net.getId();
-  //     const deployedNetwork = PharmaChain.networks[networkId];
-  //     const pharmaChain = new web3.eth.Contract(
-  //       PharmaChain.abi,
-  //       deployedNetwork && deployedNetwork.address
-  //     );
-  //     const pharmaDistributionNetwork = PharmaDistribution.networks[networkId];
-  //     const pharmaDistributionContract = new web3.eth.Contract(
-  //       PharmaDistribution.abi,
-  //       pharmaDistributionNetwork && pharmaDistributionNetwork.address
-  //     );
-  //     setPharmaDistribution(pharmaDistributionContract);
-
-  //     const manufacturerAccounts = await pharmaChain.methods
-  //       .getAllManufacturers()
-  //       .call();
-  //     const manufacturerDetails = await Promise.all(
-  //       manufacturerAccounts.map(async (addr) => {
-  //         const manufacturer = await pharmaChain.methods
-  //           .getManufacturer(addr)
-  //           .call();
-  //         const additionalDetails = await fetchDetails(
-  //           "http://localhost:5000/api/pendingStakeholders",
-  //           manufacturer.username
-  //         );
-  //         return { ...manufacturer, ...additionalDetails };
-  //       })
-  //     );
-  //     setManufacturers(manufacturerDetails);
-
-  //     const distributorAccounts = await pharmaChain.methods
-  //       .getAllDistributors()
-  //       .call();
-  //     const distributorDetails = await Promise.all(
-  //       distributorAccounts.map(async (addr) => {
-  //         const distributor = await pharmaChain.methods
-  //           .getDistributor(addr)
-  //           .call();
-  //         const additionalDetails = await fetchDetails(
-  //           "http://localhost:5000/api/pendingStakeholders",
-  //           distributor.username
-  //         );
-  //         return { ...distributor, ...additionalDetails };
-  //       })
-  //     );
-  //     setDistributors(distributorDetails);
-
-  //     if (pharmaDistribution) {
-  //       try {
-  //         const requests = await pharmaDistribution.methods
-  //           .getAllWholesalerRequests()
-  //           .call();
-  //         const filteredRequests = requests
-  //           .map((request) => ({
-  //             ...request,
-  //             requestId: Number(request.requestId), // Convert BigInt to Number
-  //             batchId: Number(request.batchId), // Convert BigInt to Number
-  //           }))
-  //           .filter(
-  //             (request) =>
-  //               request.recipient.toLowerCase() ===
-  //                 currentAccount.toLowerCase() && request.status === "Pending"
-  //           );
-  //         setWholesalerRequests(filteredRequests);
-  //       } catch (error) {
-  //         console.error("Error fetching wholesaler requests:", error);
-  //       }
-  //     }
-  //     if (pharmaDistribution) {
-  //       try {
-  //         const requests = await pharmaDistribution.methods
-  //           .getAllRequests2()
-  //           .call();
-  //         const filteredRequests = requests
-  //           .map((request) => ({
-  //             ...request,
-  //             requestId: request.requestId.toString(),
-  //             quantity: request.quantity.toString(),
-  //           }))
-  //           .filter(
-  //             (request) =>
-  //               request.wholesaler.toLowerCase() ===
-  //                 currentAccount.toLowerCase() && request.status === "Pending"
-  //           );
-  //         setHospitalRequests(filteredRequests);
-  //       } catch (error) {
-  //         console.error("Error fetching hospital/pharmacy requests:", error);
-  //       }
-  //     }
-  //     await renderMyDrugs1();
-  //   };
-
-  //   loadWeb3();
-  // }, [currentAccount, pharmaDistribution]);
-
-  // const handleLogout = () => {
-  //   localStorage.removeItem("auth-token");
-  //   localStorage.removeItem("username");
-  //   navigate("/");
-  // };
-
   useEffect(() => {
     const loadWeb3 = async () => {
       if (window.ethereum) {
@@ -243,143 +67,321 @@ const Home2 = () => {
       }
     };
 
-    loadWeb3();
-  }, [currentAccount, pharmaDistribution]);
+    const fetchDetails = async (url, username) => {
+      try {
+        const response = await axios.get(`${url}/${username}`);
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching details:", error);
+        return null;
+      }
+    };
 
-  const handleLogout = async () => {
+    const checkWholesalerStatus = async (web3, account) => {
+      try {
+        const networkId = await web3.eth.net.getId();
+        const networkData = PharmaChain.networks[networkId];
+        if (networkData) {
+          const contract = new web3.eth.Contract(PharmaChain.abi, networkData.address);
+          const wholesaler = await contract.methods.getWholesaler(account).call();
+          if (wholesaler.account.toLowerCase() === account.toLowerCase()) {
+            setIsWholesaler(true);
+          } else {
+            setIsWholesaler(false);
+          }
+        } else {
+          setIsWholesaler(false);
+        }
+      } catch (error) {
+        if (error.message.includes("Wholesaler does not exist")) {
+          setIsWholesaler(false);
+        } else {
+          console.error('Error checking Wholesaler status:', error);
+          setIsWholesaler(false);
+        }
+      }
+    };
+
+    const loadContractData = async (web3) => {
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = PharmaChain.networks[networkId];
+      const pharmaChain = new web3.eth.Contract(
+        PharmaChain.abi,
+        deployedNetwork && deployedNetwork.address
+      );
+      const pharmaDistributionNetwork = PharmaDistribution.networks[networkId];
+      const pharmaDistributionContract = new web3.eth.Contract(
+        PharmaDistribution.abi,
+        pharmaDistributionNetwork && pharmaDistributionNetwork.address
+      );
+      setPharmaDistribution(pharmaDistributionContract);
+
+      const manufacturerAccounts = await pharmaChain.methods
+        .getAllManufacturers()
+        .call();
+      const manufacturerDetails = await Promise.all(
+        manufacturerAccounts.map(async (addr) => {
+          const manufacturer = await pharmaChain.methods
+            .getManufacturer(addr)
+            .call();
+          const additionalDetails = await fetchDetails(
+            "http://localhost:5000/api/pendingStakeholders",
+            manufacturer.username
+          );
+          return { ...manufacturer, ...additionalDetails };
+        })
+      );
+      setManufacturers(manufacturerDetails);
+
+      const distributorAccounts = await pharmaChain.methods
+        .getAllDistributors()
+        .call();
+      const distributorDetails = await Promise.all(
+        distributorAccounts.map(async (addr) => {
+          const distributor = await pharmaChain.methods
+            .getDistributor(addr)
+            .call();
+          const additionalDetails = await fetchDetails(
+            "http://localhost:5000/api/pendingStakeholders",
+            distributor.username
+          );
+          return { ...distributor, ...additionalDetails };
+        })
+      );
+      setDistributors(distributorDetails);
+
+      if (pharmaDistribution) {
+        try {
+          const requests = await pharmaDistribution.methods
+            .getAllWholesalerRequests()
+            .call();
+          const filteredRequests = requests
+            .map((request) => ({
+              ...request,
+              requestId: Number(request.requestId), // Convert BigInt to Number
+              batchId: Number(request.batchId), // Convert BigInt to Number
+            }))
+            .filter(
+              (request) =>
+                request.recipient.toLowerCase() ===
+                  currentAccount.toLowerCase() && request.status === "Pending"
+            );
+          setWholesalerRequests(filteredRequests);
+        } catch (error) {
+          console.error("Error fetching wholesaler requests:", error);
+        }
+      }
+      if (pharmaDistribution) {
+        try {
+          const requests = await pharmaDistribution.methods
+            .getAllRequests2()
+            .call();
+          const filteredRequests = requests
+            .map((request) => ({
+              ...request,
+              requestId: request.requestId.toString(),
+              quantity: request.quantity.toString(),
+            }))
+            .filter(
+              (request) =>
+                request.wholesaler.toLowerCase() ===
+                  currentAccount.toLowerCase() && request.status === "Pending"
+            );
+          setHospitalRequests(filteredRequests);
+        } catch (error) {
+          console.error("Error fetching hospital/pharmacy requests:", error);
+        }
+      }
+      await renderMyDrugs1();
+    };
+
+    loadWeb3();
+  }, [currentAccount]);
+
+  const handleLogout = () => {
     localStorage.removeItem("auth-token");
     localStorage.removeItem("username");
     navigate("/");
   };
 
+  // useEffect(() => {
+  //   const loadWeb3 = async () => {
+  //     if (window.ethereum) {
+  //       const web3 = new Web3(window.ethereum);
+  //       const accounts = await window.ethereum.request({
+  //         method: "eth_requestAccounts",
+  //       });
+  //       console.log("Accounts from MetaMask:", accounts[0]);
+  //       setCurrentAccount(accounts[0]);
+  //       fetchAccountDetails(accounts[0]);
+  //       await checkWholesalerStatus(web3, accounts[0]);
+  //       await loadContractData(web3);
+  //     } else if (window.web3) {
+  //       const web3 = new Web3(window.web3.currentProvider);
+  //       const accounts = await web3.eth.getAccounts();
+  //       console.log("Accounts from MetaMask (legacy):", accounts);
+  //       setCurrentAccount(accounts[0]);
+  //       fetchAccountDetails(accounts[0]);
+  //       await checkWholesalerStatus(web3, accounts[0]);
+  //       await loadContractData(web3);
+  //     } else {
+  //       console.error(
+  //         "Non-Ethereum browser detected. You should consider trying MetaMask!"
+  //       );
+  //     }
+  //   };
 
-  const fetchDetails = async (url, username) => {
-    try {
-      const response = await axios.get(`${url}/${username}`);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching details:", error);
-      return null;
-    }
-  };
+  //   const fetchAccountDetails = async (account) => {
+  //     try {
+  //       const response = await axios.post(
+  //         "http://localhost:5000/api/pendingStakeholders/find",
+  //         { accountNumber: account }
+  //       );
+  //       setAccountDetails(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching account details:", error);
+  //     }
+  //   };
 
-  const checkWholesalerStatus = async (web3, account) => {
-    try {
-      const networkId = await web3.eth.net.getId();
-      const networkData = PharmaChain.networks[networkId];
-      if (networkData) {
-        const contract = new web3.eth.Contract(PharmaChain.abi, networkData.address);
-        const wholesaler = await contract.methods.getWholesaler(account).call();
-        if (wholesaler.account.toLowerCase() === account.toLowerCase()) {
-          setIsWholesaler(true);
-        } else {
-          setIsWholesaler(false);
-        }
-      } else {
-        setIsWholesaler(false);
-      }
-    } catch (error) {
-      if (error.message.includes("Wholesaler does not exist")) {
-        setIsWholesaler(false);
-      } else {
-        console.error('Error checking Wholesaler status:', error);
-        setIsWholesaler(false);
-      }
-    }
-  };
+  //   loadWeb3();
+  // }, []);
+  // //Changed here 
 
-  const loadContractData = async (web3) => {
-    const networkId = await web3.eth.net.getId();
-    const deployedNetwork = PharmaChain.networks[networkId];
-    const pharmaChain = new web3.eth.Contract(
-      PharmaChain.abi,
-      deployedNetwork && deployedNetwork.address
-    );
-    const pharmaDistributionNetwork = PharmaDistribution.networks[networkId];
-    const pharmaDistributionContract = new web3.eth.Contract(
-      PharmaDistribution.abi,
-      pharmaDistributionNetwork && pharmaDistributionNetwork.address
-    );
-    setPharmaDistribution(pharmaDistributionContract);
 
-    const manufacturerAccounts = await pharmaChain.methods
-      .getAllManufacturers()
-      .call();
-    const manufacturerDetails = await Promise.all(
-      manufacturerAccounts.map(async (addr) => {
-        const manufacturer = await pharmaChain.methods
-          .getManufacturer(addr)
-          .call();
-        const additionalDetails = await fetchDetails(
-          "http://localhost:5000/api/pendingStakeholders",
-          manufacturer.username
-        );
-        return { ...manufacturer, ...additionalDetails };
-      })
-    );
-    setManufacturers(manufacturerDetails);
+  // const handleLogout = async () => {
+  //   localStorage.removeItem("auth-token");
+  //   localStorage.removeItem("username");
+  //   navigate("/");
+  // };
 
-    const distributorAccounts = await pharmaChain.methods
-      .getAllDistributors()
-      .call();
-    const distributorDetails = await Promise.all(
-      distributorAccounts.map(async (addr) => {
-        const distributor = await pharmaChain.methods
-          .getDistributor(addr)
-          .call();
-        const additionalDetails = await fetchDetails(
-          "http://localhost:5000/api/pendingStakeholders",
-          distributor.username
-        );
-        return { ...distributor, ...additionalDetails };
-      })
-    );
-    setDistributors(distributorDetails);
 
-    if (pharmaDistribution) {
-      try {
-        const requests = await pharmaDistribution.methods
-          .getAllWholesalerRequests()
-          .call();
-        const filteredRequests = requests
-          .map((request) => ({
-            ...request,
-            requestId: Number(request.requestId), // Convert BigInt to Number
-            batchId: Number(request.batchId), // Convert BigInt to Number
-          }))
-          .filter(
-            (request) =>
-              request.recipient.toLowerCase() ===
-                currentAccount.toLowerCase() && request.status === "Pending"
-          );
-        setWholesalerRequests(filteredRequests);
-      } catch (error) {
-        console.error("Error fetching wholesaler requests:", error);
-      }
-    }
-    if (pharmaDistribution) {
-      try {
-        const requests = await pharmaDistribution.methods
-          .getAllRequests2()
-          .call();
-        const filteredRequests = requests
-          .map((request) => ({
-            ...request,
-            requestId: request.requestId.toString(),
-            quantity: request.quantity.toString(),
-          }))
-          .filter(
-            (request) =>
-              request.wholesaler.toLowerCase() ===
-                currentAccount.toLowerCase() && request.status === "Pending"
-          );
-        setHospitalRequests(filteredRequests);
-      } catch (error) {
-        console.error("Error fetching hospital/pharmacy requests:", error);
-      }
-    }
-    await renderMyDrugs1();
-  };
+  // const fetchDetails = async (url, username) => {
+  //   try {
+  //     const response = await axios.get(`${url}/${username}`);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error fetching details:", error);
+  //     return null;
+  //   }
+  // };
+
+  // const checkWholesalerStatus = async (web3, account) => {
+  //   try {
+  //     const networkId = await web3.eth.net.getId();
+  //     const networkData = PharmaChain.networks[networkId];
+  //     if (networkData) {
+  //       const contract = new web3.eth.Contract(PharmaChain.abi, networkData.address);
+  //       const wholesaler = await contract.methods.getWholesaler(account).call();
+  //       if (wholesaler.account.toLowerCase() === account.toLowerCase()) {
+  //         setIsWholesaler(true);
+  //       } else {
+  //         setIsWholesaler(false);
+  //       }
+  //     } else {
+  //       setIsWholesaler(false);
+  //     }
+  //   } catch (error) {
+  //     if (error.message.includes("Wholesaler does not exist")) {
+  //       setIsWholesaler(false);
+  //     } else {
+  //       console.error('Error checking Wholesaler status:', error);
+  //       setIsWholesaler(false);
+  //     }
+  //   }
+  // };
+
+  // const loadContractData = async (web3) => {
+  //   const networkId = await web3.eth.net.getId();
+  //   const deployedNetwork = PharmaChain.networks[networkId];
+  //   const pharmaChain = new web3.eth.Contract(
+  //     PharmaChain.abi,
+  //     deployedNetwork && deployedNetwork.address
+  //   );
+  //   const pharmaDistributionNetwork = PharmaDistribution.networks[networkId];
+  //   const pharmaDistributionContract = new web3.eth.Contract(
+  //     PharmaDistribution.abi,
+  //     pharmaDistributionNetwork && pharmaDistributionNetwork.address
+  //   );
+  //   setPharmaDistribution(pharmaDistributionContract);
+
+  //   const manufacturerAccounts = await pharmaChain.methods
+  //     .getAllManufacturers()
+  //     .call();
+  //   const manufacturerDetails = await Promise.all(
+  //     manufacturerAccounts.map(async (addr) => {
+  //       const manufacturer = await pharmaChain.methods
+  //         .getManufacturer(addr)
+  //         .call();
+  //       const additionalDetails = await fetchDetails(
+  //         "http://localhost:5000/api/pendingStakeholders",
+  //         manufacturer.username
+  //       );
+  //       return { ...manufacturer, ...additionalDetails };
+  //     })
+  //   );
+  //   setManufacturers(manufacturerDetails);
+
+  //   const distributorAccounts = await pharmaChain.methods
+  //     .getAllDistributors()
+  //     .call();
+  //   const distributorDetails = await Promise.all(
+  //     distributorAccounts.map(async (addr) => {
+  //       const distributor = await pharmaChain.methods
+  //         .getDistributor(addr)
+  //         .call();
+  //       const additionalDetails = await fetchDetails(
+  //         "http://localhost:5000/api/pendingStakeholders",
+  //         distributor.username
+  //       );
+  //       return { ...distributor, ...additionalDetails };
+  //     })
+  //   );
+  //   setDistributors(distributorDetails);
+
+  //   if (pharmaDistribution) {
+  //     try {
+  //       const requests = await pharmaDistribution.methods
+  //         .getAllWholesalerRequests()
+  //         .call();
+  //       const filteredRequests = requests
+  //         .map((request) => ({
+  //           ...request,
+  //           requestId: Number(request.requestId), // Convert BigInt to Number
+  //           batchId: Number(request.batchId), // Convert BigInt to Number
+  //         }))
+  //         .filter(
+  //           (request) =>
+  //             request.recipient.toLowerCase() ===
+  //               currentAccount.toLowerCase() && request.status === "Pending"
+  //         );
+  //       setWholesalerRequests(filteredRequests);
+  //     } catch (error) {
+  //       console.error("Error fetching wholesaler requests:", error);
+  //     }
+  //   }
+  //   if (pharmaDistribution) {
+  //     try {
+  //       const requests = await pharmaDistribution.methods
+  //         .getAllRequests2()
+  //         .call();
+  //       const filteredRequests = requests
+  //         .map((request) => ({
+  //           ...request,
+  //           requestId: request.requestId.toString(),
+  //           quantity: request.quantity.toString(),
+  //         }))
+  //         .filter(
+  //           (request) =>
+  //             request.wholesaler.toLowerCase() ===
+  //               currentAccount.toLowerCase() && request.status === "Pending"
+  //         );
+  //       setHospitalRequests(filteredRequests);
+  //     } catch (error) {
+  //       console.error("Error fetching hospital/pharmacy requests:", error);
+  //     }
+  //   }
+  //   await renderMyDrugs1();
+  // };
 
 
   const renderMyDrugs1 = async () => {

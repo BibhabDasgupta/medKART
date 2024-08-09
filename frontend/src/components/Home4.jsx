@@ -138,7 +138,7 @@ const Home4 = () => {
     };
   
     loadWeb3();
-  }, [currentAccount, pharmaDistribution]);
+  }, [currentAccount]);
 
   const renderMyDrugs1 = async () => {
     const web3 = new Web3(window.ethereum); // Ensure web3 instance is available

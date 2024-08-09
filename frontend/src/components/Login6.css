@@ -1,4 +1,4 @@
-.login-card {
+/* .login-card {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;
@@ -46,4 +46,89 @@
   .login-card p {
     text-align: center;
     margin-top: 10px;
+  } */
+
+  .login-card {
+    min-width: 400px;
+    /* margin: auto; */
+    padding: 20px;
+    box-shadow: 0 0 0px rgb(245, 245, 245)!important;
+    border-radius: 8px;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.65));
+    /* background: transparent; */
+    backdrop-filter: blur(10px);
+    color: #fff;
+    background: transparent!important;
+  }
+  
+  .login-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .login-card .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .login-card label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .login-card input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+  
+  .login-card button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .login-card button:hover {
+    background-color: #0056b3;
+  }
+  
+  .login-card p {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .login-card .error-message {
+    color: #ff6b6b;
+    font-weight: bold;
+  }
+  
+  .login-card .instruction {
+    color: #ffa500;
+    font-style: italic;
+  }
+  
+  .login-card .back-to-home {
+    width: 100%;
+    padding: 10px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .login-card .back-to-home:hover {
+    background-color: #5a6268;
+  }
+  
+  a:hover {
+    border-bottom: 2px solid #f8f8f8;
   }

@@ -38,7 +38,7 @@ const Home = () => {
         </nav>
       </header>
       <div className="home-content">
-        <h1>Welcome to the Pharmaceutical Supply Chain</h1>
+        <h1 className="animated-title">Welcome to the Pharmaceutical Supply Chain</h1>
         {/* Other content as needed */}
       </div>
     </div>
@@ -46,4 +46,3 @@ const Home = () => {
 }
 
 export default Home;
-

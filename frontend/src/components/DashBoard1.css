@@ -1,4 +1,4 @@
-.dashboard-container {
+/* .dashboard-container {
     padding: 20px;
     max-width: 500px;
     margin: 0 auto;
@@ -68,7 +68,68 @@
   
   .logout-button:hover {
     background-color: #ff1f3a;
+  } */
+  /* Ensure the html and body cover the entire viewport */
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-image: url('./img/backky.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   
+  /* .dashboard-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; 
+    width: 100%; 
+    background: transparent!important;
+    margin-bottom: 20px!important; */
   
+  /* .dashboard-content {
+    width: 50% !important;
+    /* max-width: 500px; 
+    /* margin: 20px auto; 
+    margin-bottom: 20px!important; 
+    padding: 0px!important;
+    border-radius: 10px;
+    background: transparent!important;    
+    /* backdrop-filter: blur(10px);
+    box-shadow: 0 0 10px rgba(245, 245, 245, 0.3);  
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  } */
+  
+  .dashboard-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .logout-button {
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .logout-button:hover {
+    background-color: #0056b3;
+  }
+  
+  p {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 16px;
+  }
   

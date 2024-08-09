@@ -6,14 +6,17 @@
 }
 
 .home-header {
-  position: absolute;
   top: 0;
   right: 0;
   padding: 20px;
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
+  backdrop-filter: blur(40px); /* Blur effect for the glass effect */
+  -webkit-backdrop-filter: blur(20px); /* Support for Safari */
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 1px 15px rgba(255, 255, 255, 0.4);
 }
 
 .home-header nav {
@@ -58,7 +61,11 @@
 }
 
 .home-content h1 {
-  font-size: 3rem;
+  font-size: 4rem;
+  overflow: hidden; /* Ensures the text stays within bounds during typing animation */
+  white-space: nowrap;
+  border-right: 4px solid rgba(255, 255, 255, 0.75); /* Blinking cursor effect */
+  animation: typing 6s steps(40, end), blink-caret 0.75s step-end infinite; /* Typing and cursor animations */
 }
 
 .hamburger {
@@ -122,7 +129,22 @@
   }
 }
 
+/* Typing Animation */
 
-  
-  
-  
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 90%;
+  }
+}
+
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: rgba(255, 255, 255, 0.75);
+  }
+}

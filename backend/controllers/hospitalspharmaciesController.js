@@ -85,3 +85,29 @@ exports.login = async (req, res) => {
   const token = jwt.sign({ _id: hospitalspharmacies._id }, config.jwtSecret, { expiresIn: '1h' });
   res.header('auth-token', token).send({ token });
 };
+exports.fetchDetails = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    // Find the manufacturer by username
+    const hospitalspharmacies = await HospitalsPharmacies.findOne({ username });
+
+    if (!hospitalspharmacies) {
+      return res.status(404).send("Hospital/pharmacy not found");
+    }
+
+    // Send the manufacturer details (excluding the password)
+    res.json({
+      username:hospitalspharmacies.username,
+      name: hospitalspharmacies.actualName,
+      address: hospitalspharmacies.address,
+      email: hospitalspharmacies.email,
+      mobileNumber: hospitalspharmacies.mobileNumber,
+      role: "Hospital/Pharmacy",
+      formSubmitted: hospitalspharmacies.formSubmitted,
+      status: hospitalspharmacies.status
+    });
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+};

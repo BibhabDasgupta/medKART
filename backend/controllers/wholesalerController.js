@@ -85,3 +85,29 @@ exports.login = async (req, res) => {
   const token = jwt.sign({ _id: wholesaler._id }, config.jwtSecret, { expiresIn: '1h' });
   res.header('auth-token', token).send({ token });
 };
+exports.fetchDetails = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    // Find the manufacturer by username
+    const wholesaler = await Wholesaler.findOne({ username });
+
+    if (!wholesaler) {
+      return res.status(404).send("Manufacturer not found");
+    }
+
+    // Send the manufacturer details (excluding the password)
+    res.json({
+      username: wholesaler.username,
+      name: wholesaler.actualName,
+      address: wholesaler.address,
+      email: wholesaler.email,
+      mobileNumber: wholesaler.mobileNumber,
+      role: "Wholesaler",
+      formSubmitted: wholesaler.formSubmitted,
+      status: wholesaler.status
+    });
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+};
