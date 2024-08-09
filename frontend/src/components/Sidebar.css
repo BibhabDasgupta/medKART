@@ -1,25 +1,30 @@
 .sidebar {
-    width: 200px;
-    background-color: #343a40;
-    color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar li {
-    margin: 10px 0;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar li:hover {
-    background-color: #495057;
-  }
-  
+  width: 200px;
+  /* border-right: 1px solid whitesmoke; */
+  background-color: rgba(14, 14, 14, 0.85);
+  /* Slight transparency */
+  color: white;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(226, 224, 224, 0.6);
+  /* Updated shadow */
+  /* backdrop-filter: blur(8px); */
+  /* Blur effect */
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 10px 0;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.sidebar li:hover {
+  background-color: #495057;
+  color: #0e0e0e
+}

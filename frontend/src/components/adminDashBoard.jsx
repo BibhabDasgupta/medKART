@@ -5,6 +5,7 @@ import './adminDashBoard.css';
 import axios from 'axios';
 import Sidebar from './Sidebar';
 import Loader from './Loader';
+import BackgroundLetterAvatars from './BackgroundAvatar';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const AdminDashboard = () => {
         {adminDetails ? (
           <div className="admin-details">
             <h3 className="admin-details-heading">Admin Details</h3>
+            <BackgroundLetterAvatars name={adminDetails.actualName} />
             <p><strong>Username:</strong> {adminDetails.username}</p>
             <p><strong>Name:</strong> {adminDetails.actualName}</p>
             <p><strong>Email:</strong> {adminDetails.email}</p>

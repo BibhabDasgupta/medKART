@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 // Import components for each page
+
 import Home from "./components/Home";
 import Manufacturers from "./components/Manufacturers";
 import Wholesalers from "./components/Wholesalers";
@@ -37,6 +38,7 @@ import RegisterHospitalPharmacy from "./components/RegisterHospitalPharmacy";
 import Present from "./components/Present";
 import Track from "./components/Track";
 import Iot from "./components/Iot";
+
 // App component
 const App = () => {
   return (
@@ -63,7 +65,7 @@ const App = () => {
           />
           <Route
             path="/manufacturers/home"
-             element={<Home1 />} 
+            element={<Home1 />}
           />
 
           <Route path="/wholesalers/login" element={<Login2 />} />
@@ -135,6 +137,7 @@ const App = () => {
             path="/admin/register-hospital-pharmacy"
             element={<ProtectedRoute element={<RegisterHospitalPharmacy />} />}
           />
+
           {/* Optional: 404 Page if no route matches */}
           <Route path="*" element={<NotFound />} />
         </Routes>
