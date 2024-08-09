@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-// Import components for each page
+import "./Table.css"
 
 import Home from "./components/Home";
 import Manufacturers from "./components/Manufacturers";

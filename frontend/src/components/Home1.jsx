@@ -5,6 +5,7 @@ import "./Home1.css";
 import axios from "axios";
 import PharmaChain from "../truffle_abis/PharmaChain.json";
 import PharmaDistribution from "../truffle_abis/PharmaDistribution.json";
+import Select from 'react-select';
 
 const Home1 = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Home1 = () => {
   const [sendDrugsBatchId, setSendDrugsBatchId] = useState("");
  const [sendDrugsDistributor, setSendDrugsDistributor] = useState("");
  const [isManufacturer, setIsManufacturer] = useState(null);
+ const [sendDrugsDistributor1, setSendDrugsDistributor1] = useState(null);
 
 
   const loadWeb3 = async () => {
@@ -248,7 +250,7 @@ const handleSendDrugsSubmit = async (e) => {
     <div>
       <h2>Pending Wholesaler Requests</h2>
       {requests.length > 0 ? (
-        <table>
+        <table className="requests-table">
           <thead>
             <tr>
               <th>Drug Name</th>
@@ -257,7 +259,7 @@ const handleSendDrugsSubmit = async (e) => {
               <th>Approve</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{color:'#0e0e0e'}}>
             {requests.map((request, index) => (
               <tr key={index}>
                 <td>{request.drugName}</td>
@@ -314,28 +316,31 @@ const handleSendDrugsSubmit = async (e) => {
     </div>
   );
   const renderSendDrugs = () => (
-    <div>
+    <div className="form-container">
       <h2>Send Drugs</h2>
       <form onSubmit={handleSendDrugsSubmit}>
-        <div>
-          <label>Batch ID:</label>
+        <div className="form-group">
+          <label htmlFor="sendDrugsBatchId">Batch ID:</label>
           <input
             type="text"
+            id="sendDrugsBatchId"
             value={sendDrugsBatchId}
             onChange={(e) => setSendDrugsBatchId(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label>Distributor ID:</label>
-          <input
-            type="text"
-            value={sendDrugsDistributor}
-            onChange={(e) => setSendDrugsDistributor(e.target.value)}
-            required
+        <div className="form-group">
+          <label htmlFor="sendDrugsDistributor">Distributor:</label>
+          <Select
+            options={distributors.map(distributor => ({
+              value: distributor.account,
+              label: `${distributor.username} (${distributor.account})`
+            }))}
+            onChange={(selectedOption) => setSendDrugsDistributor(selectedOption.value)}
+            placeholder="Select a distributor"
           />
         </div>
-        <button type="submit">Send Drugs</button>
+        <button type="submit" className="submit-btn">Send Drugs</button>
       </form>
     </div>
   );
@@ -345,7 +350,7 @@ const handleSendDrugsSubmit = async (e) => {
     <div>
       <h2>My Drugs</h2>
       {batches.length > 0 ? (
-        <table>
+        <table className="requests-table">
           <thead>
             <tr>
               <th>Batch ID</th>
@@ -356,7 +361,7 @@ const handleSendDrugsSubmit = async (e) => {
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{color:"#0e0e0e"}}>
             {batches.map((batch, index) => (
               <tr key={index}>
                 <td>{batch.batchId}</td>
@@ -398,7 +403,7 @@ const handleSendDrugsSubmit = async (e) => {
           <div>
             <h2>Distributor List</h2>
             {distributors.length > 0 ? (
-              <table>
+              <table className="requests-table">
                 <thead>
                   <tr>
                     <th>Username</th>
@@ -409,7 +414,7 @@ const handleSendDrugsSubmit = async (e) => {
                     <th>Mobile Number</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody style={{color:'#0e0e0e'}}>
                   {distributors.map((distributor, index) => (
                     <tr key={index}>
                       <td>{distributor.username}</td>

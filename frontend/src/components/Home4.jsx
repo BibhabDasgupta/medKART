@@ -220,7 +220,7 @@ const Home4 = () => {
     <div>
       <h2>{title}</h2>
       {list.length > 0 ? (
-        <table>
+        <table className='requests-table'>
           <thead>
             <tr>
               <th>Username</th>
@@ -231,7 +231,7 @@ const Home4 = () => {
               <th>Mobile Number</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{color:'#0e0e0e'}}>
             {list.map((item, index) => (
               <tr key={index}>
                 <td>{item.username}</td>
@@ -254,7 +254,7 @@ const Home4 = () => {
     <div>
       <h2>My Drugs</h2>
       {myBatches.length > 0 ? (
-        <table>
+        <table className='requests-table'>
           <thead>
             <tr>
               <th>Batch ID</th>
@@ -264,7 +264,7 @@ const Home4 = () => {
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{color:'#0e0e0e'}}>
             {myBatches.map((batch, index) => (
               <tr key={index}>
                 <td>{batch.batchId}</td>
@@ -325,7 +325,7 @@ const Home4 = () => {
     <div>
       <h2>{title}</h2>
       {data.length > 0 ? (
-        <table>
+        <table className='requests-table'>
           <thead>
             <tr>
               <th>Request ID</th>
@@ -335,7 +335,7 @@ const Home4 = () => {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{color:'#0e0e0e'}}>
             {data.map((item, index) => (
               <tr key={index}>
                 <td>{item.requestId}</td>

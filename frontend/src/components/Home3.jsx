@@ -5,6 +5,7 @@ import Web3 from 'web3';
 import axios from 'axios';
 import PharmaChain from '../truffle_abis/PharmaChain.json';
 import PharmaDistribution from '../truffle_abis/PharmaDistribution.json';
+import Select from 'react-select';
 
 const Home3 = () => {
   const navigate = useNavigate();
@@ -20,6 +21,10 @@ const Home3 = () => {
   const [batchIdToSend, setBatchIdToSend] = useState('');
   const [hospitalAddressToSend, setHospitalAddressToSend] = useState('');
   const [isDistributor, setIsDistributor] = useState(null);
+  const [wholesalerOptions, setWholesalerOptions] = useState([]);
+const [hospitalPharmacyOptions, setHospitalPharmacyOptions] = useState([]);
+const [selectedWholesaler, setSelectedWholesaler] = useState(null);
+const [selectedHospitalPharmacy, setSelectedHospitalPharmacy] = useState(null);
 
 
   useEffect(() => {
@@ -115,6 +120,17 @@ const Home3 = () => {
 
       const hospitalsPharmacies = await fetchAndSetDetails('getAllHospitalPharmacies', 'getHospitalPharmacy');
       setHospitalsPharmacies(hospitalsPharmacies);
+      const wholesalerOpts = wholesalers.map(w => ({
+        value: w.account,
+        label: `${w.username} (${w.account})`
+      }));
+      setWholesalerOptions(wholesalerOpts);
+  
+      const hospitalPharmacyOpts = hospitalsPharmacies.map(hp => ({
+        value: hp.account,
+        label: `${hp.username} (${hp.account})`
+      }));
+      setHospitalPharmacyOptions(hospitalPharmacyOpts);
 
       await fetchPendingRequests();
       await fetchPendingRequests1();
@@ -244,9 +260,16 @@ const Home3 = () => {
     const pharmaDistribution = new web3.eth.Contract(PharmaDistribution.abi, deployedNetwork && deployedNetwork.address);
 
     try {
+      // const regex = /\(([^)]+)\)/;
+      console.log(typeof hospitalAddressToSend)
+      
+      // const match = hospitalAddressToSend.match(regex);
+      
+      // console.log(match)
       await pharmaDistribution.methods.createDeliveryRequestToWholesaler(
+        
         parseInt(batchIdToSend), // Convert string to BigInt
-        hospitalAddressToSend
+       hospitalAddressToSend.value
       ).send({ from: currentAccount });
       
       // Clear form fields and refresh the list
@@ -322,7 +345,7 @@ const Home3 = () => {
     <div>
       <h2>{title}</h2>
       {list.length > 0 ? (
-        <table>
+        <table className='requests-table'>
           <thead>
             <tr>
               <th>Username</th>
@@ -333,7 +356,7 @@ const Home3 = () => {
               <th>Mobile Number</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{color:'#0e0e0e'}}>
             {list.map((item, index) => (
               <tr key={index}>
                 <td>{item.username}</td>
@@ -357,7 +380,7 @@ const Home3 = () => {
     <div>
       <h2>My Drugs</h2>
       {myBatches.length > 0 ? (
-        <table>
+        <table className='requests-table'>
           <thead>
             <tr>
               <th>Batch ID</th>
@@ -367,7 +390,7 @@ const Home3 = () => {
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{color:'#0e0e0e'}}>
             {myBatches.map((batch, index) => (
               <tr key={index}>
                 <td>{batch.batchId}</td>
@@ -386,13 +409,13 @@ const Home3 = () => {
   );
 
   const renderSendDrugs = () => (
-    <div>
-      <h2>Send Drugs</h2>
+    <div className="form-container">
+      <h2>Send Drugs to Wholesalers</h2>
       <form onSubmit={(e) => {
         e.preventDefault();
         handleSendDrugs();
       }}>
-        <div>
+        <div className="form-group">
           <label htmlFor="batchId">Batch ID:</label>
           <input
             type="text"
@@ -402,29 +425,28 @@ const Home3 = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="hospitalAddress">Wholesaler Address:</label>
-          <input
-            type="text"
-            id="hospitalAddress"
+        <div className="form-group">
+          <label htmlFor="wholesalerAddress">Wholesaler:</label>
+          <Select
+            options={wholesalerOptions}
+            onChange={(selectedOption) => setHospitalAddressToSend(selectedOption)}
             value={hospitalAddressToSend}
-            onChange={(e) => setHospitalAddressToSend(e.target.value)}
-            required
+            placeholder="Select a wholesaler"
           />
         </div>
-        <button type="submit">Send Drugs</button>
+        <button type="submit" className="submit-btn">Send Drugs</button>
       </form>
     </div>
   );
 
   const renderSendDrugs1 = () => (
-    <div>
-      <h2>Send Drugs</h2>
+    <div className="form-container">
+      <h2>Send Drugs to Hospitals/Pharmacies</h2>
       <form onSubmit={(e) => {
         e.preventDefault();
         handleSendDrugs1();
       }}>
-        <div>
+        <div className="form-group">
           <label htmlFor="batchId">Batch ID:</label>
           <input
             type="text"
@@ -434,17 +456,16 @@ const Home3 = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="hospitalAddress">Hospital/Pharmacy Address:</label>
-          <input
-            type="text"
-            id="hospitalAddress"
-            value={hospitalAddressToSend}
-            onChange={(e) => setHospitalAddressToSend(e.target.value)}
-            required
+        <div className="form-group">
+          <label htmlFor="hospitalPharmacyAddress">Hospital/Pharmacy:</label>
+          <Select
+            options={hospitalPharmacyOptions}
+            onChange={(selectedOption) => setSelectedHospitalPharmacy(selectedOption)}
+            value={selectedHospitalPharmacy}
+            placeholder="Select a hospital/pharmacy"
           />
         </div>
-        <button type="submit">Send Drugs</button>
+        <button type="submit" className="submit-btn">Send Drugs</button>
       </form>
     </div>
   );
@@ -453,7 +474,7 @@ const Home3 = () => {
     <div>
       <h2>Pending Delivery Requests</h2>
       {pendingRequests.length > 0 ? (
-        <table>
+        <table className='requests-table'>
           <thead>
             <tr>
               <th>Request ID</th>
@@ -464,7 +485,7 @@ const Home3 = () => {
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{color:'#0e0e0e'}}>
             {pendingRequests.map((request, index) => (
               <tr key={index}>
                 <td>{request.requestId}</td>
@@ -489,7 +510,7 @@ const Home3 = () => {
     <div>
       <h2>Pending Delivery Requests</h2>
       {pendingRequests1.length > 0 ? (
-        <table>
+        <table className="requests-table">
           <thead>
             <tr>
               <th>Request ID</th>
@@ -500,7 +521,7 @@ const Home3 = () => {
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{color:'#0e0e0e'}}>
             {pendingRequests1.map((request, index) => (
               <tr key={index}>
                 <td>{request.requestId}</td>
